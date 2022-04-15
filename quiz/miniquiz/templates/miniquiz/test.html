@@ -75,7 +75,8 @@
 
 		<div id="task-container">
 			<div id="form-wrapper">
-				<form id="form">
+				<form id="form" action="" method="POST">
+					{% csrf_token %}
 					<div class="flex-wrapper">
 						<div style="flex: 6">
 							<input id="title" class="form-control" type="text" name="title" placeholder="Question">
@@ -84,16 +85,16 @@
 					<br>	
 					<div class="flex-wrapper">
 						<div>
-							<input id="opt-0" class="form-control" type="text" name="title" placeholder="Answer 1">
+							<input id="opt-0" class="form-control" type="text" name="option1" placeholder="Answer 1">
 						</div>
 						<div >
-							<input id="opt-1" class="form-control" type="text" name="title" placeholder="Answer 2">
+							<input id="opt-1" class="form-control" type="text" name="option2" placeholder="Answer 2">
 						</div>
 						<div >
-							<input id="opt-2" class="form-control" type="text" name="title" placeholder="Answer 3">
+							<input id="opt-2" class="form-control" type="text" name="option3" placeholder="Answer 3">
 						</div>
 						<div >
-							<input id="opt-3" class="form-control" type="text" name="title" placeholder="Answer 4">
+							<input id="opt-3" class="form-control" type="text" name="option4" placeholder="Answer 4">
 						</div>
 					</div>
 					
@@ -136,6 +137,7 @@
 		var csrftoken = getCookie('csrftoken');
 		var activeItem = null
 		var list_snapshot = []
+		var questionid= null
         function buildList(){
 			{
             question:[]
@@ -204,6 +206,8 @@
 				}
 				
 				document.getElementById('title').value=activeItem.question
+				questionid=activeItem.questionid
+
 			
 		}
 
@@ -217,7 +221,6 @@
 		// }
 		function deleteItems(item){
 			activeItem=item
-			
 			console.log(activeItem.questionid)
 			fetch(`http://127.0.0.1:8000/getquestion/${_this.a}/delete/${activeItem.questionid}`,{
 				method:'DELETE',
@@ -234,8 +237,12 @@
 			e.preventDefault()
 			var url=`http://127.0.0.1:8000/getquestion/${_this.a}/add`
 			if(activeItem != null){
-				var url=`http://127.0.0.1:8000/getquestion/${_this.a}/add`
+				var url=`http://127.0.0.1:8000/getquestion/${_this.a}/${questionid}update`
 				activeItem=null
+				var opt1=document.getElementById('option1').value
+				var opt2=document.getElementById('option2').value
+				var opt3=document.getElementById('option3').value
+				var opt4=document.getElementById('option4').value
 			}
 
 			var title=document.getElementById('title').value
@@ -246,7 +253,7 @@
 					'Content-type':'application/json',
 					'X-CSRFToken':csrftoken,
 				},
-				body:JSON.stringify({'title':title})
+				body:JSON.stringify({'title':title},)
 				
 			})
 			.then(function(response){

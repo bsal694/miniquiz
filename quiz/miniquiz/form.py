@@ -1,7 +1,7 @@
-from django import forms
+from django.forms import ModelForm
 from .models import *
 
-class question_form(forms.ModelForm):
+class question_form(ModelForm):
 
     class Meta:
         model=Questions
@@ -16,3 +16,4 @@ class question_form(forms.ModelForm):
     #     super(question_form, self).__init__(*args, **kwargs)
     #     self.fields['category'].queryset = Category.objects.filter(
     #     uid=self.request.GET.get('category'))
+

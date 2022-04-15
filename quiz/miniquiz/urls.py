@@ -10,7 +10,11 @@ urlpatterns = [
     path('', views.home,name="context"),
     path('quiz/<uuid:uuid_check>', views.quiz,name="context"),
     path('<uuid:uuid_check>/delete/<int:hi>', views.home_view,name="context"),
+    # path('quiz/<uuid:uuid_check>/add',views.add,name="context")
     path('<uuid:uuid_check>/add',views.add,name="context")
+    # path('<uuid:uuid_check>/update',views.update,name="context")
+
+
 
 
 

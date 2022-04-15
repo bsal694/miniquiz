@@ -15,7 +15,7 @@ def home(request):
     return render(request,'miniquiz/home.html',context)
 
 def quiz(request,uuid_check):
-    context={'category':Questions.objects.filter(category_id=uuid_check),'id':uuid_check }
+    context={'category':Questions.objects.filter(category_id=uuid_check),'id':uuid_check, }
     return render(request,'miniquiz/test.html',context)
 
 
@@ -98,16 +98,44 @@ def home_view(request,hi,uuid_check):
     return render(request,'miniquiz/test.html')
 
 def add(request,uuid_check):
-    if request.method =='POST':
+    if request.method == 'POST':
 
         post_data=json.loads(request.body.decode("UTF-8"))
-        a=post_data.get("title")
-        Questions.question=a
-        Questions.save()
+        name=post_data['title']
+        quest=Questions(question=name,category_id=uuid_check)
+        quest.save()
+
+        # post_data=json.loads(request.body.decode("UTF-8"))
+
+    else:
+        print ("error")
 
 
-
-         
     return render(request,'miniquiz/quiz.html')
 
+
+    def update(request,uuid_check,questionid):
+        if request.method == 'POST':
+            post_data=json.loads(request.body.decode("UTF-8"))
+            name=post_data['title']
+            quest=Questions(question=name,category_id=uuid_check,questionid=questionid)
+            quest.save()
+
+            # post_data=json.loads(request.body.decode("UTF-8"))
+
+        else:
+            print ("error")
+
+
+    return render(request,'miniquiz/quiz.html')
+
+# def add(request,uuid_check):
+
+#     if request.method == 'POST':
+#         name=request.POST['title']
+#         quest=Questions(question=name,category_id=uuid_check)
+#         quest.save()
+#         print("hi")
+
+#     return render(request,'miniquiz/quiz.html')
     
