@@ -149,6 +149,7 @@ USE_TZ = True
 # STATIC_URL = 'static/'
 STATIC_URL = '/static/'
 
+
 # Add these new lines
 
 # Default primary key field type

@@ -98,35 +98,37 @@ def home_view(request,hi,uuid_check):
     return render(request,'miniquiz/test.html')
 
 def add(request,uuid_check):
-    if request.method == 'POST':
 
+    if request.method == 'POST':
         post_data=json.loads(request.body.decode("UTF-8"))
+
+
         name=post_data['title']
+        option1=post_data['opt1']
+        option2=post_data['opt2']
+        option3=post_data['opt3']
+        option4=post_data['opt4']
+
         quest=Questions(question=name,category_id=uuid_check)
         quest.save()
-
-        # post_data=json.loads(request.body.decode("UTF-8"))
-
-    else:
-        print ("error")
+        questionid=Questions.objects.filter(question=name).values('questionid')
+        Answer1=Answer(answer=option1,question_id=questionid)
+        Answer2=Answer(answer=option2,question_id=questionid)
+        Answer3=Answer(answer=option3,question_id=questionid)
+        Answer4=Answer(answer=option4,question_id=questionid)
+        Answer1.save()
+        Answer2.save()
+        Answer3.save()
+        Answer4.save()
 
 
     return render(request,'miniquiz/quiz.html')
 
 
-    def update(request,uuid_check,questionid):
-        if request.method == 'POST':
-            post_data=json.loads(request.body.decode("UTF-8"))
-            name=post_data['title']
-            quest=Questions(question=name,category_id=uuid_check,questionid=questionid)
-            quest.save()
+def update(request,uuid_check,questionid):
+    print("hello")
 
-            # post_data=json.loads(request.body.decode("UTF-8"))
-
-        else:
-            print ("error")
-
-
+       
     return render(request,'miniquiz/quiz.html')
 
 # def add(request,uuid_check):

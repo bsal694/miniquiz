@@ -1,3 +1,4 @@
+{% load static%}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -40,6 +41,12 @@
 		  box-shadow: 0 3px 8px rgba(0,0,0,0.25);
  		  padding:40px;
 		}
+		.error{
+			display: none;
+		}
+		.error img{
+			width:2%;
+		}
 
 		#submit{
 		  background-color: #36d9b6;
@@ -58,7 +65,7 @@
 		  	padding:20px;
 		  	cursor: pointer;
 		  	border-bottom: 1px solid  #e9e9e9;
-		  	color: #686868;
+		  	color: black;
 			}
 		#title{
 			width: 70%;
@@ -66,7 +73,21 @@
 		#opt-1,#opt-2,#opt-3,#opt-4{
 			width:100%;
 		}
+		.myminiquiz{
+			background-image:url("{% static 'miniquiz/img/6f2216e5-5a10-4763-9a10-17f92c66a295/6f2216e5-5a10-4763-9a10-17f92c66a295.jpg' %}");
+			background-repeat: no-repeat;
+  			background-size: cover;
+			background-position: center;
+	
 
+		}
+		.edit img,.delete img{
+			width: 100%;
+			height: auto;
+		}
+		.edit,.delete{
+			width: 60%;
+		}
 	</style>
 
 </head>
@@ -79,24 +100,27 @@
 					{% csrf_token %}
 					<div class="flex-wrapper">
 						<div style="flex: 6">
-							<input id="title" class="form-control" type="text" name="title" placeholder="Question">
+							<input id="title" class="form-control" type="text" name="title" placeholder="Question" required>
 						</div>
 					</div>
 					<br>	
 					<div class="flex-wrapper">
 						<div>
-							<input id="opt-0" class="form-control" type="text" name="option1" placeholder="Answer 1">
+							<input id="opt-0" class="form-control" type="text" name="option1" placeholder="Answer 1" required>
 						</div>
 						<div >
-							<input id="opt-1" class="form-control" type="text" name="option2" placeholder="Answer 2">
+							<input id="opt-1" class="form-control" type="text" name="option2" placeholder="Answer 2" required>
 						</div>
 						<div >
-							<input id="opt-2" class="form-control" type="text" name="option3" placeholder="Answer 3">
+							<input id="opt-2" class="form-control" type="text" name="option3" placeholder="Answer 3" required>
 						</div>
 						<div >
-							<input id="opt-3" class="form-control" type="text" name="option4" placeholder="Answer 4">
+							<input id="opt-3" class="form-control" type="text" name="option4" placeholder="Answer 4" required>
 						</div>
 					</div>
+					<!-- <div class="error">
+						<img src="{% static 'miniquiz/img/a.png' %}">
+					</div> -->
 					
 					<div style="flex: 1">
 						<input id="submit" class="btn" type="submit" >
@@ -104,10 +128,13 @@
 					
 				</form>
 			</div>
-
-			<div id="list-wrapper">
+			<div class="myminiquiz">
+				<div id="list-wrapper">
+				
 			
-			</div>	
+				</div>
+			</div>
+				
 		</div>
 
 	</div>
@@ -115,7 +142,8 @@
     <script>
         var _this=this
         var a='{{id}}'
-		console.log(a)
+		// document.getElementById("myminiquiz").style.backgroundImage = "url("{% static 'miniquiz/img/6f2216e5-5a10-4763-9a10-17f92c66a295/6f2216e5-5a10-4763-9a10-17f92c66a295.jpg' %}")";
+		// Image.backgroundImage = url("{% static 'miniquiz/img/6f2216e5-5a10-4763-9a10-17f92c66a295/6f2216e5-5a10-4763-9a10-17f92c66a295.jpg' %}")
 
 		function getCookie(name) {
 			var cookieValue = null;
@@ -132,7 +160,7 @@
 			}
 			return cookieValue;
 		}
-
+		console.log(a)
 
 		var csrftoken = getCookie('csrftoken');
 		var activeItem = null
@@ -163,10 +191,10 @@
 
 							</div>
 							<div style="flex:1">
-								<button class="btn btn-sm btn-outline-info edit">Edit</button>
+								<button class="edit"><img src="{% static 'miniquiz/img/assest/write.png' %}"></button>
 							</div>
 							<div style="flex:1">
-								<button class="btn btn-sm btn-outline-dark delete">-</button>
+								<button class="delete"><img src="{% static 'miniquiz/img/assest/delete.png' %}"</button>
 							</div>
 					
 						</div>
@@ -237,29 +265,42 @@
 			e.preventDefault()
 			var url=`http://127.0.0.1:8000/getquestion/${_this.a}/add`
 			if(activeItem != null){
-				var url=`http://127.0.0.1:8000/getquestion/${_this.a}/${questionid}update`
+				var url=`http://127.0.0.1:8000/getquestion/${_this.a}/${questionid}/update`
 				activeItem=null
-				var opt1=document.getElementById('option1').value
-				var opt2=document.getElementById('option2').value
-				var opt3=document.getElementById('option3').value
-				var opt4=document.getElementById('option4').value
+				
 			}
+
+
+			var opt1=document.getElementById('opt-0').value
+			var opt2=document.getElementById('opt-1').value
+			var opt3=document.getElementById('opt-2').value
+			var opt4=document.getElementById('opt-3').value
+
 
 			var title=document.getElementById('title').value
 
 			fetch(url,{
-				method:'POST',
-				headers:{
-					'Content-type':'application/json',
-					'X-CSRFToken':csrftoken,
-				},
-				body:JSON.stringify({'title':title},)
+			method:'POST',
+			headers:{
+				'Content-type':'application/json',
+				'X-CSRFToken':csrftoken,
+			},
+			body:JSON.stringify({
+			'title':title,
+			'opt1':opt1,
+			'opt2':opt2,
+			'opt3':opt3,
+			'opt4':opt4,
+			})
 				
 			})
 			.then(function(response){
 				buildList()
 				document.getElementById('form').reset()
-			})			
+			})
+
+
+			
 		})
 
     </script>
