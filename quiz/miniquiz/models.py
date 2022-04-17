@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 import uuid,random
+from django.utils import timezone
+
 
 
 
@@ -10,7 +12,7 @@ username =get_user_model()
 # Create your models here.e
 #Base class
 class BaseModel(models.Model):
-    update_at=models.DateField(auto_now_add=True)
+    update_at=models.DateField(auto_now=True)
     created_at=models.DateField(auto_now=True)
     class Meta:
         abstract=True
@@ -27,7 +29,7 @@ class Category(BaseModel):
 class Questions(models.Model):
     questionid = models.AutoField(primary_key=True)
     category=models.ForeignKey(Category,related_name="category",on_delete=models.CASCADE)
-    update_at=models.DateField(auto_now_add=True)
+    update_at=models.DateField(auto_now=True)
     created_at=models.DateField(auto_now=True)
     question=models.CharField(max_length=100)
     def __str__(self)->str:

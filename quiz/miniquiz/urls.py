@@ -12,7 +12,7 @@ urlpatterns = [
     path('<uuid:uuid_check>/delete/<int:hi>', views.home_view,name="context"),
     # path('quiz/<uuid:uuid_check>/add',views.add,name="context")
     path('<uuid:uuid_check>/add',views.add,name="context"),
-    path('<uuid:uuid_check>/<int:questionid>/update',views.update,name="context")
+    path('<uuid:uuid_check>/<int:questionsid>/update',views.update,name="context")
 
 
 

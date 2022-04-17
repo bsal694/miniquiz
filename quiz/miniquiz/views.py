@@ -125,19 +125,37 @@ def add(request,uuid_check):
     return render(request,'miniquiz/quiz.html')
 
 
-def update(request,uuid_check,questionid):
-    print("hello")
+def update(request,uuid_check,questionsid):
+        if request.method == 'POST':
+            post_data=json.loads(request.body.decode("UTF-8"))
 
-       
-    return render(request,'miniquiz/quiz.html')
 
-# def add(request,uuid_check):
+            name=post_data['title']
+            option1=post_data['opt1']
+            option2=post_data['opt2']
+            option3=post_data['opt3']
+            option4=post_data['opt4']
 
-#     if request.method == 'POST':
-#         name=request.POST['title']
-#         quest=Questions(question=name,category_id=uuid_check)
-#         quest.save()
-#         print("hi")
 
-#     return render(request,'miniquiz/quiz.html')
+
+
+            questio=Questions(question=name,category_id=uuid_check,questionid=questionsid)
+            questio.save()
+            quest=Questions.objects.get(questionid=questionsid,question=name)
+           
+
+            
+            # quests.save()
+            questionids=Answer.objects.filter(question=quest).values('answer_id')
+            Answer1=Answer(answer=option1,answer_id=questionids[0]['answer_id'],question_id=questionsid)
+            Answer2=Answer(answer=option2,answer_id=questionids[1]['answer_id'],question_id=questionsid)
+            Answer3=Answer(answer=option3,answer_id=questionids[2]['answer_id'],question_id=questionsid)
+            Answer4=Answer(answer=option4,answer_id=questionids[3]['answer_id'],question_id=questionsid)
+            Answer1.save()
+            Answer2.save()
+            Answer3.save()
+            Answer4.save()
+        return render(request,'miniquiz/quiz.html')
+
+
     
