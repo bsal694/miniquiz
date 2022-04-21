@@ -1,0 +1,145 @@
+{% block context %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+		body{
+		  background: rgb(54,217,182);
+		  background: linear-gradient(90deg, rgba(54,217,182,1) 0%, rgba(32,152,126,1) 43%, rgba(0,212,255,1) 100%);
+		}
+
+
+		h1, h2, h3, h4, h5, p, span, strike{
+		  font-family: 'Montserrat', sans-serif;
+
+		}
+
+
+		#task-container{
+		  max-width:600px;
+		  height: 90vh;
+		  margin:0 auto;
+		  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+		  background-color: #fff;
+		  
+		  margin-top:50px;
+		  margin-bottom:50px;
+
+		  justify-content: space-around;
+		  align-items: flex-start;
+
+		}
+		.contentWriter{
+			width:auto;
+			height: auto;
+			padding:20px;
+		}
+		.Writer_Profile{
+			display: flex;
+		}
+		.posts{
+			width:100%;
+			height: auto;
+		}
+		.follower{
+			width: 40%;
+			height: auto;
+			align-self: center;
+		}
+		.username{
+			text-align: center;
+			align-self: center;
+		}
+		
+		.btnfollower,.posts{
+			width: 100%;
+			display: inline-flex;
+			justify-content: space-between;
+		}
+		.btn{
+			width: 40%;
+
+		}
+
+		.btnfollower,.posts > div{
+	
+			margin: 10px 0;
+		}
+
+		.btnfollower button{
+			background: rgb(39, 9, 233);
+			border-radius: 23px;
+			border: none;
+  			color: white;
+  			padding: 10px 30px;
+			text-align: center;
+			text-decoration: none;
+			cursor: pointer;
+	
+		}
+		.btnfollower button:hover{
+			background-color: black;
+
+		}
+		.Writer_Profile > div{
+			margin-right: 4rem;
+		
+		}
+		.writerimage img{
+			width: 120px;
+			height: 120px;
+			border-radius: 100px;
+
+			
+		}
+	
+
+
+	</style>
+
+</head>
+<body>
+	<div class="container">
+		
+		<div id="task-container">
+			<div class="contentWriter">
+
+				<div class="Writer_Profile">
+					<div class="writerimage">
+						<img src="{{image}}" >
+					</div>
+					<div class="follower">
+						<div class="btnfollower">
+							<div class="username">{{name}}</div>
+							<div class="btn">
+								<button type="submit">Follow</button>
+							</div>
+						</div>
+						
+						<div class="posts">
+							<div class="totalpost">Post {{categoryCount}}</div>
+							<div class="totalFollowers">1000 Folowers</div>
+						</div>
+					</div>
+				</div>
+				
+
+			</div>
+			<hr>
+			<div class="categoryDetail">
+				sd
+			</div>
+				
+		</div>
+
+	</div>
+    
+
+
+</body>
+</html>
+{% endblock context %}

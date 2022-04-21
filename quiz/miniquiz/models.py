@@ -19,6 +19,7 @@ class BaseModel(models.Model):
 
 class Category(BaseModel):
     uid=models.UUIDField(primary_key=True, default=uuid.uuid4,editable=False)
+    categoryImage=models.ImageField(null=True,blank=True,upload_to="categoryImage/")
     categoryName=models.CharField(max_length=100)
     description = models.TextField()
     authors = models.ForeignKey(username,on_delete=models.CASCADE)
@@ -53,6 +54,8 @@ class Answer(BaseModel):
 
     def __str__(self):
         return self.answer
+
+
     
 
 
