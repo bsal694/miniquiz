@@ -88,7 +88,6 @@ def add(request,uuid_check):
         option2=post_data['opt2']
         option3=post_data['opt3']
         option4=post_data['opt4']
-
         quest=Questions(question=name,category_id=uuid_check)
         quest.save()
         questionid=Questions.objects.filter(question=name).values('questionid')
@@ -130,19 +129,64 @@ def update(request,uuid_check,questionsid):
         return render(request,'miniquiz/quiz.html')
 
 def detail(request,uuid_check):
+   
 
     if request.user.is_authenticated:
+        currentuser=request.user.username 
 
         # username=str(request.user).upper()
         authorid=Category.objects.filter(uid=uuid_check).values('authors').first()
-        print(authorid['authors'])
         a=Account.objects.filter(id=authorid['authors']).values('username').first()
         username=a['username']
         profileImage=Account.objects.filter(username=username).values('profile_image').first()
         profile_image="http://127.0.0.1:8000/media/"+profileImage['profile_image']
-        print("http://127.0.0.1:8000/media/"+profileImage['profile_image'])
         # username=Account.objects.filter(id=authorid).values()
         # print(username)
+        if request.method=='POST':
+            values=request.POST['value']
+            user=request.POST['user']
+            followerss=request.POST['follower']
+            
+            print(a)
+
+
+
+            if values == 'follow':
+                followers_count=follower(follower=followerss,user=user)
+                followers_count.save()
+            if values == 'unfollow':
+                a=follower.objects.filter(user=user).values('id').first()
+                id=a['id']
+                followers_count=follower(follower=followerss,user=user,id=id)
+                followers_count.delete()
+
+            
+
+
+
+
+        user_followers=len(follower.objects.filter(user=username))
+        user_following=len(follower.objects.filter(follower=username))
+        user_follower_list=follower.objects.filter(user=username)
+        print(user_follower_list)
+        user_follower_list1=[]
+        for i in user_follower_list:
+            user_follower_list0=i.follower
+            user_follower_list1.append(user_follower_list0)
+        if currentuser in user_follower_list1:
+            follow_button_value="unfollow"
+            print("hi")
+
+        else:
+            print(currentuser)
+            follow_button_value="follow"
+
+
+        
+
+
+        
+
 
 
 
@@ -150,7 +194,10 @@ def detail(request,uuid_check):
     context={
         'categoryCount':Category.objects.filter(authors=authorid['authors']).count(),
         'name':username,
-        'image':profile_image
+        'image':profile_image,
+        'follower':user_followers,
+        'following':user_following,
+        'follow_button_value':follow_button_value
         
         
     }
