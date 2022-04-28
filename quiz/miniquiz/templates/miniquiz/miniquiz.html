@@ -1,0 +1,208 @@
+{% block context %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+		body{
+		  background: rgb(54,217,182);
+		  background: linear-gradient(90deg, rgba(54,217,182,1) 0%, rgba(32,152,126,1) 43%, rgba(0,212,255,1) 100%);
+		}
+
+
+		h1, h2, h3, h4, h5, p, span, strike{
+		  font-family: 'Montserrat', sans-serif;
+
+		}
+
+
+		#task-container{
+		  max-width:600px;
+		  height: 90vh;
+		  margin:0 auto;
+		  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+		  background-color: #fff;
+		  
+		  margin-top:50px;
+		  margin-bottom:50px;
+
+		  justify-content: space-around;
+		  align-items: flex-start;
+
+
+		}
+        .container{
+            padding:40px 30px;
+        }
+        .top-header{
+            width:100%;
+            height:15rem;
+            background-color: aquamarine;
+        } 
+        .body_footer{
+            width:100%;
+            height: 15rem;
+            background-color: blue;
+        }
+	</style>
+
+</head>
+<body>
+	<div class="container">
+		
+		<div id="task-container">
+            <div class="container">
+                <div id="timmer">
+
+                </div>
+               <div id="row">
+                    <h2 id="questions">1) Question Box</h2>
+                    <div class="row">
+                        <input class="option" id="option1" type="radio" value="0" name="option" />
+                        <label for="option1">Option 1</label>
+                    </div>
+                    <div class="row">
+                        <input class="option" id="option2" type="radio" value="1" name="option" />
+                        <label for="option2">Option 2</label>
+                    </div>
+                    <div class="row">
+                        <input class="option" id="option3" type="radio" value="2" name="option" />
+                        <label for="option3">Option 3</label>
+                    </div>
+                    <div class="row">
+                        <input class="option" id="option4" type="radio" value="3" name="option" />
+                        <label for="option4">Option 4</label>
+                    </div>
+                    <button id="submit" type="submit" onclick="submits()">
+                        Submit
+                    </button>
+               </div>
+            </div>
+
+			
+		</div>
+
+	</div>
+
+
+    <script>
+        var _this=this
+        var i=0
+        var wrong=0
+        var right=0
+        var a='{{id}}'
+        const questions=document.getElementById("questions")
+        const optionInput=document.querySelectorAll('.option')
+        var form=document.getElementById('submit')
+        var box =document.getElementById('row')
+        const el = document.getElementById("timmer");
+
+        
+        function loadquestion(i){
+			{
+            question:[]
+        	}
+            
+			fetch(`http://127.0.0.1:8000/getquestion/${_this.a}`)
+			.then((response) => response.json())
+			.then((result)=>{
+				_this.question=result.data
+                var list=_this.question[i]
+                // console.log(list.answer[0].answer)
+                questions.innerHTML=`${i+1}) ${list.question}`
+                optionInput[0].nextElementSibling.innerText=list.answer[0].answer
+                optionInput[1].nextElementSibling.innerText=list.answer[1].answer
+                optionInput[2].nextElementSibling.innerText=list.answer[2].answer
+                optionInput[3].nextElementSibling.innerText=list.answer[3].answer
+			})
+
+		}
+
+
+        function submits(){
+
+
+
+            const ans=getAnswer()
+            const a=question[0].answer[ans].is_correct
+            if (a == true){
+                var audio = new Audio("{% static '/miniquiz/audio/right_answer.mp3' %}")
+                audio.play()
+                console.log(audio)
+                var right=right+1
+                console.log(right+"hi")
+            }
+            else{
+
+                var audio = new Audio("{% static '/miniquiz/audio/wrong_answer.mp3' %}")
+                
+                audio.play()
+                console.log(audio)
+                var wrong=wrong+1
+                console.log(wrong+"hello")
+    
+            }
+            finalQuizpage=`
+                    <div>
+                        <p>"${right}" out of "${wrong}" </p>
+                    </div>
+                `
+
+        }
+    
+
+
+        const getAnswer=()=>{
+
+            optionInput.forEach((input)=>{
+                if(input.checked){
+
+                    i++
+                    if(i < question.length){
+                        loadquestion(i)
+                    // cntDown()
+                        answer=input.value
+
+                    }
+                    else{
+                        box.innerHTML=finalQuizpage
+                        el.style.display="none"
+
+
+                    }
+                    
+                }
+                    
+                }
+            )
+            return answer
+        }
+    function cntDown() {
+        let sec = 20;
+        const timer = setInterval(() => {
+            el.innerHTML = sec--;
+            if (sec < 10) el.style.color = "#ff0";
+            if (sec < 5) el.style.color = "#f00";
+            if (sec < 0) clearInterval(timer);
+        }, 1000);
+    }
+
+        
+    loadquestion(i)
+    cntDown()
+
+
+
+
+
+
+    </script>
+    
+
+
+</body>
+</html>
+{% endblock context %}

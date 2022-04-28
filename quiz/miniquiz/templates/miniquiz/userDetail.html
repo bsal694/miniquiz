@@ -96,6 +96,45 @@
 
 			
 		}
+		.categoryDetail{
+			width: 100%;
+			height: auto;
+			position: relative;
+		}
+		.image{
+			background-image: url('http://127.0.0.1:8000/media/categoryImage/pexels-pixabay-47730.jpg');
+			filter: blur(8px);
+ 			-webkit-filter: blur(8px);
+			background-repeat: none;
+			background-size: cover;
+			width: auto;
+			height: 75%;
+		
+		}
+		.text{
+			background-color: rgb(0,0,0); /* Fallback color */
+			background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+			color: white;
+			font-weight: bold;
+		
+
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 2;
+			width: 90%;
+			
+			padding: 20px;
+			text-align: center;
+		}
+		.rules li{
+			list-style-type:circle;
+			font-size: small;
+			text-align: left;
+			color:#FFFF00;
+			font-weight: normal;
+		}	
 	
 
 
@@ -147,9 +186,39 @@
 			</div>
 			<hr>
 			<div class="categoryDetail">
-				sd
+				<div class="image">
+
+				</div>
+				<div class="text">
+					<div class="categoryName">
+						Politics
+					</div>
+					<div class="categoryDescription">
+						<p> </p>
+					</div>
+					<div class="quizruled">
+						<ul class="rules">
+							<li>Only team entries are eligible, and team shall consist of three persons</li>
+							<li>The decision of the quiz-master will be final and will not be subjected to any change.</li>
+							<li>The participants shall not be allowed to use mobile or other electronic instruments.</li>
+							<li>The questions shall be in the form of multiple choice, True / False statement, Specificanswer question etc.</li>	
+							<li>Audience/Supporters shall not give any hints or clues to the competitors.</li>
+							<li>Replacement of any participant of a team is not allowed after registration</li>
+						</ul>
+						
+					</div>
+					<div class="button">
+						<button>Start Quiz</button>
+					</div>
+					<div class="updated_date">
+						2022-20-10
+					</div>
+					<div class="updated_date">
+						10 Questions 
+					</div>
+				</div>
 			</div>
-				
+			
 		</div>
 
 	</div>

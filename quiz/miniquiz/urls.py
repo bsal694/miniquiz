@@ -13,7 +13,8 @@ urlpatterns = [
     # path('quiz/<uuid:uuid_check>/add',views.add,name="context")
     path('<uuid:uuid_check>/add',views.add,name="context"),
     path('<uuid:uuid_check>/<int:questionsid>/update',views.update,name="context"),
-    path('play/<uuid:uuid_check>',views.detail,name="context"),
+    path('play',views.detail,name="context"),
+    path('get',views.miniquiz,name="context"),
 
 
 

@@ -38,7 +38,7 @@
 
 	<div class="playquiz">
 		{% for quiz in quizCategory%}
-			<a href="play/{{quiz.uid}}">{{quiz}}</a>
+			<a href="play?quizid={{quiz.uid}}">{{quiz}}</a>
 			<br>
 		{% endfor%}
 	</div>

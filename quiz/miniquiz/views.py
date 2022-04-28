@@ -128,18 +128,23 @@ def update(request,uuid_check,questionsid):
             Answer4.save()
         return render(request,'miniquiz/quiz.html')
 
-def detail(request,uuid_check):
+def detail(request):
+    request.GET.get('quizid')
    
 
     if request.user.is_authenticated:
         currentuser=request.user.username 
-
-        # username=str(request.user).upper()
+        uuid_check=request.GET.get('quizid')
+        username=str(request.user).upper()
+        
         authorid=Category.objects.filter(uid=uuid_check).values('authors').first()
         a=Account.objects.filter(id=authorid['authors']).values('username').first()
         username=a['username']
         profileImage=Account.objects.filter(username=username).values('profile_image').first()
         profile_image="http://127.0.0.1:8000/media/"+profileImage['profile_image']
+        print(username)
+
+
         # username=Account.objects.filter(id=authorid).values()
         # print(username)
         if request.method=='POST':
@@ -197,13 +202,24 @@ def detail(request,uuid_check):
         'image':profile_image,
         'follower':user_followers,
         'following':user_following,
-        'follow_button_value':follow_button_value
+        'follow_button_value':follow_button_value,
+        
         
         
     }
    
    
     return render(request,'miniquiz/userDetail.html',context)
+
+def miniquiz(request):
+    uuid_check=request.GET.get('quizid')
+    a=Category.objects.all().values()
+    print(a)
+    context={
+        'id': uuid_check,
+    }
+
+    return render(request,'miniquiz/miniquiz.html',context)
 
 
     
