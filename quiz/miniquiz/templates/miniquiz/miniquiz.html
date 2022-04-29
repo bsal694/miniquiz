@@ -56,10 +56,11 @@
 		<div id="task-container">
             <div class="container">
                 <div id="timmer">
-
+                    20
                 </div>
                <div id="row">
                     <h2 id="questions">1) Question Box</h2>
+                    <audio src="https://www.bensound.com/bensound-music/bensound-moose.mp3" autoplay></audio>
                     <div class="row">
                         <input class="option" id="option1" type="radio" value="0" name="option" />
                         <label for="option1">Option 1</label>
@@ -91,8 +92,9 @@
     <script>
         var _this=this
         var i=0
-        var wrong=0
         var right=0
+        var wrong=0
+
         var a='{{id}}'
         const questions=document.getElementById("questions")
         const optionInput=document.querySelectorAll('.option')
@@ -122,32 +124,34 @@
 		}
 
 
-        function submits(){
+        function submits(right=0,wrong=0){
 
-
-
+          
             const ans=getAnswer()
             const a=question[0].answer[ans].is_correct
             if (a == true){
                 var audio = new Audio("{% static '/miniquiz/audio/right_answer.mp3' %}")
                 audio.play()
                 console.log(audio)
-                var right=right+1
-                console.log(right+"hi")
+                right=right+1
+                console.log(right)
+
             }
             else{
 
                 var audio = new Audio("{% static '/miniquiz/audio/wrong_answer.mp3' %}")
                 
+
+                
                 audio.play()
                 console.log(audio)
-                var wrong=wrong+1
-                console.log(wrong+"hello")
+                wrong=wrong+1
+                console.log(wrong + "hi")
     
             }
             finalQuizpage=`
                     <div>
-                        <p>"${right}" out of "${wrong}" </p>
+                        <p>Congratulations You made ${right} of ${question.length} </p>
                     </div>
                 `
 
@@ -181,18 +185,30 @@
             return answer
         }
     function cntDown() {
+
         let sec = 20;
         const timer = setInterval(() => {
+
+
             el.innerHTML = sec--;
+
             if (sec < 10) el.style.color = "#ff0";
-            if (sec < 5) el.style.color = "#f00";
-            if (sec < 0) clearInterval(timer);
+            if (sec < 5)el.style.color = "#f00"; 
+            if (sec < 0){
+                clearInterval(timer)
+                box.innerHTML=finalQuizpage
+                el.style.display="none"
+
+            } ;
+
         }, 1000);
     }
 
         
     loadquestion(i)
+
     cntDown()
+
 
 
 
