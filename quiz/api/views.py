@@ -51,24 +51,22 @@ from .email import *
 
 @api_view(['POST'])
 def RegisterAPI(request):
+    print(request)
     if request.method =='POST':       
         try:
             serializer=UserSerializer(data=request.data)
             if serializer.is_valid:
                 a=send_otp_via_mail(request.data['email'])
-                print(a)
                 return Response({
                     'status':200,
                     'message':"Registration successfull",
-                    'otp_verified':'True',
-                    'data':serializer.data
+                    'data':a
                 })
-            print(a)
             return Response({
                 'status':500,
                 'message':'something went wrong',
                 'otp_verified':'True',
-                'data':serializer.error
+
             })
         except:
             print("error")

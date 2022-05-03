@@ -151,11 +151,6 @@ def detail(request):
             values=request.POST['value']
             user=request.POST['user']
             followerss=request.POST['follower']
-            
-            print(a)
-
-
-
             if values == 'follow':
                 followers_count=follower(follower=followerss,user=user)
                 followers_count.save()

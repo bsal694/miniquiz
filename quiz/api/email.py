@@ -14,6 +14,6 @@ def send_otp_via_mail(email):
         user_obj=Account.objects.get(email=email)
         user_obj.otp=otp
         user_obj.save()
-        return otp
+        return otp,email
     except:
         print("errors")

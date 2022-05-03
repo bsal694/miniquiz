@@ -47,6 +47,77 @@
             height: 15rem;
             background-color: blue;
         }
+        input{
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-size:large;
+            text-align: left;
+            padding-left: 20%;
+            
+        }
+        .row > div{
+            padding:10px;
+            margin:0 100px;
+        }
+        .option{
+            
+            width:100%;
+            height: 48px;
+            background: #F4F6FC;
+            box-shadow: 8px 10px 6px rgba(0, 0, 0, 0.044);
+            border-radius: 50px;
+            background: #F4F6FC;
+            box-shadow: 8px 10px 6px rgba(0, 0, 0, 0.25);
+            border: 1px solid black;
+
+        }
+        #questions{
+            text-align: center;
+        }
+        #timmer{
+            height:10vh ;
+        }
+        .o{
+            position: relative;
+        }
+        span{
+            position: absolute;
+            left: 5%;
+    top:28%;
+            text-align: center;
+            background: #BDBDBD;
+            border-radius: 50%;
+            width: 8%;
+            height: 40%;
+            border:1px solid rgba(0, 0, 0, 0.373);
+            text-align: center;
+            font-size:x-large;
+            font-weight: 700;
+            color: #131212;
+        }
+        .option:hover{
+            background-color: rgb(0, 3, 6);
+            color:#fff;
+
+        }
+        .option3{
+            position: relative;
+        }
+        #icon{
+            background-repeat: no-repeat;
+
+
+            background-size: cover;
+            position:absolute;
+            right: 5%;
+            top:28%;
+            width:25px;
+            height:25px;
+            text-align: center;
+            
+
+        }
+
+
 	</style>
 
 </head>
@@ -60,26 +131,31 @@
                 </div>
                <div id="row">
                     <h2 id="questions">1) Question Box</h2>
-                    <audio src="https://www.bensound.com/bensound-music/bensound-moose.mp3" autoplay></audio>
+                    <br>
+
                     <div class="row">
-                        <input class="option" id="option1" type="radio" value="0" name="option" />
-                        <label for="option1">Option 1</label>
+                        <div class="option1 o" id="a">
+                            <span id="txt">A</span>
+                           <input type="button" value="option 1" class="option" id="option1" > 
+                        </div>
+                       <div class="option2 o" id="a">
+                            <span id="txt">B</span>
+                           <input type="button" value="option 2" class="option" id="option2"  > 
+
+                       </div>
+                        <div class="option3 o" id="a">
+                            <span id="txt">C</span>
+                            <div id="icon"></div>
+                            <input type="button" value="option 3" class="option" id="option3" > 
+
+                        </div>
+
+                        <div class="option4 o" id="a">
+                            <span id="txt">D</span>
+                            <input type="button" value="option 4" class="option" id="option4" > 
+
+                        </div>
                     </div>
-                    <div class="row">
-                        <input class="option" id="option2" type="radio" value="1" name="option" />
-                        <label for="option2">Option 2</label>
-                    </div>
-                    <div class="row">
-                        <input class="option" id="option3" type="radio" value="2" name="option" />
-                        <label for="option3">Option 3</label>
-                    </div>
-                    <div class="row">
-                        <input class="option" id="option4" type="radio" value="3" name="option" />
-                        <label for="option4">Option 4</label>
-                    </div>
-                    <button id="submit" type="submit" onclick="submits()">
-                        Submit
-                    </button>
                </div>
             </div>
 
@@ -92,21 +168,25 @@
     <script>
         var _this=this
         var i=0
-        var right=0
-        var wrong=0
+        let right=0
+        let wrong=0
 
         var a='{{id}}'
         const questions=document.getElementById("questions")
         const optionInput=document.querySelectorAll('.option')
+        const button = document.querySelector('input');
         var form=document.getElementById('submit')
         var box =document.getElementById('row')
         const el = document.getElementById("timmer");
+        const optionbtn=document.getElementsByTagName('span')
+        var checkbox=document.getElementById("icon")
 
         
         function loadquestion(i){
 			{
             question:[]
         	}
+            console.log("apple")
             
 			fetch(`http://127.0.0.1:8000/getquestion/${_this.a}`)
 			.then((response) => response.json())
@@ -114,100 +194,108 @@
 				_this.question=result.data
                 var list=_this.question[i]
                 // console.log(list.answer[0].answer)
+                
                 questions.innerHTML=`${i+1}) ${list.question}`
-                optionInput[0].nextElementSibling.innerText=list.answer[0].answer
-                optionInput[1].nextElementSibling.innerText=list.answer[1].answer
-                optionInput[2].nextElementSibling.innerText=list.answer[2].answer
-                optionInput[3].nextElementSibling.innerText=list.answer[3].answer
+                optionInput[0].value=list.answer[0].answer
+                optionInput[1].value=list.answer[1].answer
+                optionInput[2].value=list.answer[2].answer
+                optionInput[3].value=list.answer[3].answer
+                cntDown()
 			})
 
 		}
 
 
-        function submits(right=0,wrong=0){
-
-          
-            const ans=getAnswer()
-            const a=question[0].answer[ans].is_correct
-            if (a == true){
-                var audio = new Audio("{% static '/miniquiz/audio/right_answer.mp3' %}")
-                audio.play()
-                console.log(audio)
-                right=right+1
-                console.log(right)
-
-            }
-            else{
-
-                var audio = new Audio("{% static '/miniquiz/audio/wrong_answer.mp3' %}")
-                
-
-                
-                audio.play()
-                console.log(audio)
-                wrong=wrong+1
-                console.log(wrong + "hi")
-    
-            }
-            finalQuizpage=`
-                    <div>
-                        <p>Congratulations You made ${right} of ${question.length} </p>
-                    </div>
-                `
-
-        }
-    
 
 
-        const getAnswer=()=>{
-
-            optionInput.forEach((input)=>{
-                if(input.checked){
-
-                    i++
-                    if(i < question.length){
-                        loadquestion(i)
-                    // cntDown()
-                        answer=input.value
-
-                    }
-                    else{
-                        box.innerHTML=finalQuizpage
-                        el.style.display="none"
-
-
-                    }
-                    
-                }
-                    
-                }
-            )
-            return answer
-        }
+        
     function cntDown() {
 
         let sec = 20;
         const timer = setInterval(() => {
-
+            finalQuizpage=`
+                        <div>
+                            <p>Congratulations You made ${right} of ${question.length} </p>
+                        </div>
+                    ` 
 
             el.innerHTML = sec--;
 
             if (sec < 10) el.style.color = "#ff0";
             if (sec < 5)el.style.color = "#f00"; 
             if (sec < 0){
-                clearInterval(timer)
-                box.innerHTML=finalQuizpage
-                el.style.display="none"
+                console.log(i)
+                if(question.length>i){
+                        clearInterval(timer)
+                        setTimeout(loadquestion, 2000,i=i+1);
+                        if(question.length==i){
+                            box.innerHTML=finalQuizpage
+                            el.style.display="none"
+
+                        }
+                        console.log("1")
+                }
+                
 
             } ;
 
         }, 1000);
     }
 
-        
-    loadquestion(i)
+    
+    optionInput.forEach((input)=>{
+        console.log(input.value)
+        input.addEventListener('click',function(){
+            // optionbtn.style.backgroundColor="red"
+            
+            
 
-    cntDown()
+            var ans=input.value
+
+            const answers=question[i].answer
+            answers.forEach((inputs)=>{
+                
+                if(inputs.answer == ans){
+                    if(inputs.is_correct == true){
+                        document.getElementById('icon').style.backgroundImage="url('http://127.0.0.1:8000/media/assest/accept.png')"
+                        var audio = new Audio("{% static '/miniquiz/audio/right_answer.mp3' %}")
+                        audio.play()
+                        right=right+1
+                    }
+                    else{
+                        document.getElementById('icon').style.backgroundImage="url('http://127.0.0.1:8000/media/assest/cross.png')"
+                        
+                        var audio = new Audio("{% static '/miniquiz/audio/wrong_answer.mp3' %}")
+                        audio.play()
+                        wrong=wrong+1
+                    }
+                    i=i+1
+                    finalQuizpage=`
+                        <div>
+                            <p>Congratulations You made ${right} of ${question.length} </p>
+                        </div>
+                    `
+                    if(question.length>i){
+                        setTimeout(loadquestion, 2000,i);
+                        
+                    }
+                    else{
+                        box.innerHTML=finalQuizpage
+                        el.style.display="none"
+                    }
+                    
+                    
+
+                }
+            })
+            
+        })
+
+    })
+    function onchange(){
+        console.log("hi")
+    }
+    loadquestion(i)
 
 
 
