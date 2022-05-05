@@ -10,6 +10,7 @@
 
 </head>
 <body>
+	{% if request.user.is_authenticated%}
 	My Quiz
 	<div class="myquiz">
 		{% for category in categories%}
@@ -29,6 +30,9 @@
 			{{form}}
 		</form>
 	</div>
+	{% else %}
+	<p>Login</p>
+	{% endif %}
 
 
 

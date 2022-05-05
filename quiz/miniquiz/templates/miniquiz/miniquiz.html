@@ -102,10 +102,8 @@
         .option3{
             position: relative;
         }
-        #icon{
+        .icons{
             background-repeat: no-repeat;
-
-
             background-size: cover;
             position:absolute;
             right: 5%;
@@ -114,7 +112,6 @@
             height:25px;
             text-align: center;
             
-
         }
 
 
@@ -136,16 +133,24 @@
                     <div class="row">
                         <div class="option1 o" id="a">
                             <span id="txt">A</span>
+                        
+
                            <input type="button" value="option 1" class="option" id="option1" > 
                         </div>
                        <div class="option2 o" id="a">
                             <span id="txt">B</span>
+                           
+
+
+
                            <input type="button" value="option 2" class="option" id="option2"  > 
 
                        </div>
                         <div class="option3 o" id="a">
                             <span id="txt">C</span>
-                            <div id="icon"></div>
+                           
+
+
                             <input type="button" value="option 3" class="option" id="option3" > 
 
                         </div>
@@ -153,6 +158,7 @@
                         <div class="option4 o" id="a">
                             <span id="txt">D</span>
                             <input type="button" value="option 4" class="option" id="option4" > 
+                            
 
                         </div>
                     </div>
@@ -179,14 +185,22 @@
         var box =document.getElementById('row')
         const el = document.getElementById("timmer");
         const optionbtn=document.getElementsByTagName('span')
-        var checkbox=document.getElementById("icon")
+        const right_icon=document.getElementsByClassName('icons')
+        var div=document.createElement("div");
+        div.classList.add("icons");
+
 
         
         function loadquestion(i){
 			{
             question:[]
         	}
-            console.log("apple")
+            console.log(i)
+            if(!(i == 0)){
+                console.log("hi")
+                right_icon[0].remove()
+
+            }
             
 			fetch(`http://127.0.0.1:8000/getquestion/${_this.a}`)
 			.then((response) => response.json())
@@ -244,44 +258,61 @@
 
     
     optionInput.forEach((input)=>{
-        console.log(input.value)
-        input.addEventListener('click',function(){
+        
+        
+        input.addEventListener('click',function(e){
             // optionbtn.style.backgroundColor="red"
-            
-            
-
             var ans=input.value
-
             const answers=question[i].answer
-            answers.forEach((inputs)=>{
-                
+
+            
+            answers.forEach((inputs)=>{  
+                      
                 if(inputs.answer == ans){
                     if(inputs.is_correct == true){
-                        document.getElementById('icon').style.backgroundImage="url('http://127.0.0.1:8000/media/assest/accept.png')"
+                        
+                        input.parentNode.append(div)
+
+
+
+
+
+
+
+                        
+                        // icons[] => {
+                        //     element.style.backgroundImage="url('http://127.0.0.1:8000/media/assest/cross.png')"
+                            
+                        // }); 
                         var audio = new Audio("{% static '/miniquiz/audio/right_answer.mp3' %}")
                         audio.play()
+                        
+                        right_icon[0].style.backgroundImage="url('http://127.0.0.1:8000/media/assest/accept.png')"
+                        
+
+                        
+                        
+                        
                         right=right+1
                     }
                     else{
-                        document.getElementById('icon').style.backgroundImage="url('http://127.0.0.1:8000/media/assest/cross.png')"
-                        
+
+                        // icons.style.backgroundImage="url('http://127.0.0.1:8000/media/assest/cross.png')"
+                        input.parentNode.append(div)
                         var audio = new Audio("{% static '/miniquiz/audio/wrong_answer.mp3' %}")
                         audio.play()
+                        right_icon[0].style.backgroundImage="url('http://127.0.0.1:8000/media/assest/cross.png')"
                         wrong=wrong+1
                     }
                     i=i+1
-                    finalQuizpage=`
-                        <div>
-                            <p>Congratulations You made ${right} of ${question.length} </p>
-                        </div>
-                    `
+
                     if(question.length>i){
+                        
                         setTimeout(loadquestion, 2000,i);
                         
                     }
                     else{
-                        box.innerHTML=finalQuizpage
-                        el.style.display="none"
+                        setTimeout(onfinish, 2000);
                     }
                     
                     
@@ -292,8 +323,15 @@
         })
 
     })
-    function onchange(){
-        console.log("hi")
+    function onfinish(){
+        finalQuizpage=`
+                        <div>
+                            <p>Congratulations You made ${right} of ${question.length} </p>
+                        </div>
+                    `
+        box.innerHTML=finalQuizpage
+        el.style.display="none"
+        
     }
     loadquestion(i)
 
