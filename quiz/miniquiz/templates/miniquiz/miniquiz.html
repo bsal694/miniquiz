@@ -114,17 +114,107 @@
             
         }
 
+        @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,500;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,900&display=swap");
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  padding: 35px;
+
+  background: rgb(243, 243, 243);
+  color: #131313;
+  font-family: "Montserrat", sans-serif;
+}
+h1 {
+  margin: 15px 0;
+  font-weight: 900;
+  font-size: 28px;
+  text-align: center;
+}
+
+#clock {
+  padding: 3px;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  height: 30%;
+  font-size: 24px;
+}
+.progress-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.progress-ring__circle {
+  transition: 0.5s;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  stroke: rgb(51, 65, 255);
+}
+
+
+
+.danger {
+  stroke: rgb(243, 17, 28);
+  animation: pulse 0.9s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: rotate(-90deg) scale(1);
+  }
+  50% {
+    transform: rotate(-90deg) scale(1.05);
+  }
+  75% {
+    transform: rotate(-90deg) scale(0.8);
+  }
+}
+
+
+        
+
 
 	</style>
 
 </head>
 <body>
-	<div class="container">
+	<div class="container1">
 		
 		<div id="task-container">
             <div class="container">
-                <div id="timmer">
-                    20
+                <figure id="clock">
+                    <div class="mins">0</div>
+                    <div>:</div>
+                    <div class="secs">00</div>
+                    <audio
+                      src="http://soundbible.com/mp3/service-bell_daniel_simion.mp3"
+                    ></audio>
+                    <svg class="progress-ring" height="120" width="120">
+                      <circle
+                        class="progress-ring__circle"
+                        stroke-width="8"
+                        fill="transparent"
+                        r="50"
+                        cx="60"
+                        cy="60"
+                      />
+                    </svg>
+                  </figure>
+                  
                 </div>
                <div id="row">
                     <h2 id="questions">1) Question Box</h2>
@@ -183,9 +273,9 @@
         const button = document.querySelector('input');
         var form=document.getElementById('submit')
         var box =document.getElementById('row')
-        const el = document.getElementById("timmer");
         const optionbtn=document.getElementsByTagName('span')
         const right_icon=document.getElementsByClassName('icons')
+        const el = document.getElementById("clock");
         var div=document.createElement("div");
         div.classList.add("icons");
 
@@ -198,7 +288,9 @@
             console.log(i)
             if(!(i == 0)){
                 console.log("hi")
-                right_icon[0].remove()
+                myStopFunction()
+                // right_icon[0].remove()
+
 
             }
             
@@ -214,7 +306,7 @@
                 optionInput[1].value=list.answer[1].answer
                 optionInput[2].value=list.answer[2].answer
                 optionInput[3].value=list.answer[3].answer
-                cntDown()
+                t()
 			})
 
 		}
@@ -223,123 +315,242 @@
 
 
         
-    function cntDown() {
+    // function cntDown() {
 
-        let sec = 20;
-        const timer = setInterval(() => {
-            finalQuizpage=`
-                        <div>
-                            <p>Congratulations You made ${right} of ${question.length} </p>
-                        </div>
-                    ` 
+    //     let sec = 20;
+    //     const timer = setInterval(() => {
+    //         finalQuizpage=`
+    //                     <div>
+    //                         <p>Congratulations You made ${right} of ${question.length} </p>
+    //                     </div>
+    //                 ` 
 
-            el.innerHTML = sec--;
+    //         el.innerHTML = sec--;
 
-            if (sec < 10) el.style.color = "#ff0";
-            if (sec < 5)el.style.color = "#f00"; 
-            if (sec < 0){
-                console.log(i)
-                if(question.length>i){
-                        clearInterval(timer)
-                        setTimeout(loadquestion, 2000,i=i+1);
-                        if(question.length==i){
-                            box.innerHTML=finalQuizpage
-                            el.style.display="none"
+    //         if (sec < 10) el.style.color = "#ff0";
+    //         if (sec < 5)el.style.color = "#f00"; 
+    //         if (sec < 0){
+    //             console.log(i)
+    //             if(question.length>i){
+    //                     clearInterval(timer)
+    //                     box.append(div)
+    //                     setTimeout(loadquestion, 2000,i=i+1);
+    //                     if(question.length==i){
+    //                         box.innerHTML=finalQuizpage
+    //                         el.style.display="none"
 
-                        }
-                        console.log("1")
-                }
+    //                     }
+    //             }
                 
 
-            } ;
+        //     } ;
 
-        }, 1000);
-    }
+        // }, 1000);
+    // }
 
     
-    optionInput.forEach((input)=>{
-        
-        
-        input.addEventListener('click',function(e){
-            // optionbtn.style.backgroundColor="red"
-            var ans=input.value
-            const answers=question[i].answer
-
+        optionInput.forEach((input)=>{
             
-            answers.forEach((inputs)=>{  
-                      
-                if(inputs.answer == ans){
-                    if(inputs.is_correct == true){
+            
+            input.addEventListener('click',function(e){
+                // optionbtn.style.backgroundColor="red"
+                var ans=input.value
+                const answers=question[i].answer
+
+                
+                answers.forEach((inputs)=>{  
                         
-                        input.parentNode.append(div)
-
-
-
-
-
-
-
-                        
-                        // icons[] => {
-                        //     element.style.backgroundImage="url('http://127.0.0.1:8000/media/assest/cross.png')"
+                    if(inputs.answer == ans){
+                        if(inputs.is_correct == true){
                             
-                        // }); 
-                        var audio = new Audio("{% static '/miniquiz/audio/right_answer.mp3' %}")
-                        audio.play()
+                            input.parentNode.append(div)
+
+
+
+
+
+
+
+                            
+                            // icons[] => {
+                            //     element.style.backgroundImage="url('http://127.0.0.1:8000/media/assest/cross.png')"
+                                
+                            // }); 
+                            var audio = new Audio("{% static '/miniquiz/audio/right_answer.mp3' %}")
+
+                    
+                            audio.play()
+                            
+                            right_icon[0].style.backgroundImage="url('http://127.0.0.1:8000/media/assest/accept.png')"
+                            
+
+                            
+                            
+                            
+                            right=right+1
+                        }
+                        else{
+
+                            // icons.style.backgroundImage="url('http://127.0.0.1:8000/media/assest/cross.png')"
+                            input.parentNode.append(div)
+                            var audio = new Audio("{% static '/miniquiz/audio/wrong_answer.mp3' %}")
+
+                            audio.play()
+                            right_icon[0].style.backgroundImage="url('http://127.0.0.1:8000/media/assest/cross.png')"
+                            wrong=wrong+1
+                        }
+                        i=i+1
+
+                        if(question.length>i){
+                            setTimeout(loadquestion, 1000,i);
+                            
+                        }
+                        else{
+                            myStopFunction();
+                            setTimeout(onfinish, 1000);
+                        }
                         
-                        right_icon[0].style.backgroundImage="url('http://127.0.0.1:8000/media/assest/accept.png')"
                         
 
-                        
-                        
-                        
-                        right=right+1
                     }
-                    else{
+                })
+                
+            })
 
-                        // icons.style.backgroundImage="url('http://127.0.0.1:8000/media/assest/cross.png')"
-                        input.parentNode.append(div)
-                        var audio = new Audio("{% static '/miniquiz/audio/wrong_answer.mp3' %}")
-                        audio.play()
-                        right_icon[0].style.backgroundImage="url('http://127.0.0.1:8000/media/assest/cross.png')"
-                        wrong=wrong+1
-                    }
-                    i=i+1
+        })
+        function onfinish(){
+            
+            finalQuizpage=`
+                            <div>
+                                <p>Congratulations You made ${right} of ${question.length} </p>
+                            </div>
+                        `
+            box.innerHTML=finalQuizpage
+            el.style.display="none"
+        }
 
+
+        function t(){
+            const circle = document.querySelector(".progress-ring__circle");
+            const radius = circle.r.baseVal.value;
+            const circumference = radius * 2 * Math.PI;
+
+            circle.style.strokeDasharray = circumference;
+            circle.style.strokeDashoffset = circumference;
+
+            function setProgress(percent) {
+            const offset = circumference - (percent / 100) * circumference;
+            circle.style.strokeDashoffset = offset;
+            }
+
+
+
+            const mindiv = document.querySelector(".mins");
+            const secdiv = document.querySelector(".secs");
+
+
+            localStorage.setItem("btn", "focus");
+
+            let  totalsecs, perc, mins, seconds;
+
+            let btn = localStorage.getItem("btn");
+
+            if (btn === "focus") {
+            mins = +localStorage.getItem("focusTime") || 1;
+            } else {
+            mins = +localStorage.getItem("breakTime") || 1;
+            }
+
+            seconds = mins * 60;
+            totalsecs = mins * 60;
+            setTimeout(decremenT);
+
+
+
+            function decremenT() {
+                console.log(seconds)
+                mindiv.textContent = Math.floor(seconds / 60);
+                secdiv.textContent = seconds % 60 > 9 ? seconds % 60 : `0${seconds % 60}`;
+                if (circle.classList.contains("danger")) {
+                circle.classList.remove("danger");
+            }
+
+
+
+            if (seconds > 0) {
+                perc = Math.ceil(((totalsecs - seconds) / totalsecs) * 100);
+                setProgress(perc);
+                seconds--;
+                initial = window.setTimeout(decremenT, 50);
+                if (seconds < 10) {
+                circle.classList.add("danger");
+               
+                
+                }
+            } else {
+                mins = 0;
+                seconds = 0;
+                console.log()
+                console.log(i,question.length)
+
+                // setTimeout(loadquestion, 2000,i=i+1)
+                let btn = localStorage.getItem("btn");
+
+                if (btn === "focus") {
                     if(question.length>i){
                         
-                        setTimeout(loadquestion, 2000,i);
-                        
+                        if(question.length==i+1){
+                            finalQuizpage=`
+                            <div>
+                                <p>Congratulations You made ${right} of ${question.length} </p>
+                            </div>
+                        `
+                            box.innerHTML=finalQuizpage
+                            el.style.display="none"
+                        }
+                        else{
+                            setTimeout(loadquestion, 1000,i=i+1);
+                        }
                     }
-                    else{
-                        setTimeout(onfinish, 2000);
-                    }
-                    
-                    
+                    localStorage.setItem("btn", "break");
 
+                } else {
+                    localStorage.setItem("btn", "focus");
                 }
-            })
-            
-        })
 
-    })
-    function onfinish(){
-        finalQuizpage=`
-                        <div>
-                            <p>Congratulations You made ${right} of ${question.length} </p>
-                        </div>
-                    `
-        box.innerHTML=finalQuizpage
-        el.style.display="none"
+            }
+
+            }
+
+
+        }
+        function myStopFunction() {
+            clearTimeout(initial);
+        }
+        loadquestion(i)
         
-    }
-    loadquestion(i)
+       
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
 
     </script>
     

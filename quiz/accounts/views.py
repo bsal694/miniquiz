@@ -17,10 +17,13 @@ def register_view(request,*args,**kwargs):
 			
 			form.save()
 			email=form.cleaned_data.get('email').lower()
+			username=form.cleaned_data.get('username').lower()
 			raw_password=form.cleaned_data.get('password1')
 			# user=authenticate(email=email,password=raw_password)
 			request.session['raw_password']=raw_password
 			request.session['email']=email
+			request.session['username']=username
+
 			a=RegisterAPI(request)
 			if a.data['status']==200:
 				return redirect("otp")
@@ -35,16 +38,22 @@ def register_view(request,*args,**kwargs):
 
 def otpverification(request):
 	email=request.session['email']
-	print(email)
 	emailUser=Account.objects.filter(email=email).values('email').first(),
 	Userotp=Account.objects.filter(email=email).values('otp').first(),
-	uotp=Userotp[0]['otp']
+	print(Userotp[0]['otp'])
+	
 	# if request.POST == Userotp:
 	# 	print("verified") 
 	if request.POST:
-		if request.POST['otp']==uotp:
+		req=request.POST
+		userotp=req['one']+req['two']+req['three']+req['four']
+		print(request.POST)
+		if userotp==Userotp[0]['otp']:
 			email=request.session['email']
 			raw_password=request.session['raw_password']
+			# username=request.session['username']
+			# form =RegistrationForm(email,raw_password,username)
+			# form.save()
 			user=authenticate(email=email,password=raw_password)
 			login(request,user)
 			response=redirect('/getquestion/')

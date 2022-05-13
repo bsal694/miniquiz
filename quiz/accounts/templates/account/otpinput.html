@@ -1,51 +1,164 @@
-
 {% load static %}
 
 {% block content %}
 
-
-<style type="text/css">
-
-  .card-signin {
-	  width: 100%;
-	  max-width: 400px;
-	  padding: 15px;
-	  margin: auto;
-  }
-  
-  .form-signin input[type="email"] {
-    margin-bottom: 10px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-  .form-signin input[type="password"] {
-    margin-bottom: -1px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-
+<div class="containar">
+  <div class="wrapper">
+      <form action="" method="POST">
+          {% csrf_token %}
+          <h1>two step verification</h1>
+          <img src="https://images.unsplash.com/photo-1548021029-d6cf339a5ce4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="">
+          <p>4 digit OTP is send to mobile number +91********94</p>
+          <div class="code">
+              <input type = "number" maxlength = "1" name="one" id="otp1" onkeyup="mover(event,'','otp1','otp2')">
+              <input type = "number" maxlength = "1" name="two" id="otp2"  name="one"onkeyup="mover(event,'otp1','otp2','otp3')">
+              <input type = "number" maxlength = "1" name="three" id="otp3" onkeyup="mover(event,'otp2','otp3','otp4')">
+              <input type = "number" maxlength = "1" name="four" id="otp4" onkeyup="mover(event,'otp3','otp4','')">
+          </div>
+          <button type="submit">Submit</button>
+          <button class="cancel">Cancel</button>
+      </form>
+  </div>
+</div>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+::-webkit-scrollbar {
+    width: 0;
+    display: none;
+}
+body {
+    position: relative;
+}
+.containar {
+    position: relative;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: rgb(212, 211, 211);
+    overflow: hidden;
+}
+.wrapper {
+    height: 570px;
+    width: 400px;
+    background-color: rgba(106, 112, 112, 0.226);
+    border-radius: 20px;
+    padding: 40px;
+    backdrop-filter: blur(3px);
+    z-index: 1;
+}
+h1 {
+    font-size: 25px;
+    text-transform: capitalize;
+}
+p {
+    font-size: 15px;
+}
+h1, p {
+    text-align: center;
+    margin: 0 auto;
+}
+form img {
+    display: block;
+    margin: 15px auto;
+    height: 200px;
+    width: 300px;
+}
+form input[type="text"], form input[type="password"], button {
+    display: block;
+    margin: 20px auto;
+}
+.code {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+form input[type="number"] {
+    text-align: center;
+    width: 15%;
+    margin: 10px 5px;
+    padding: 5px ;
+    background: none;
+    border: none;
+    border-bottom: 2px solid rgb(0, 40, 158);
+    outline: none;
+    color: whitesmoke;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: large;
+}
+::placeholder {
+    color: rgb(136, 136, 156);
+}
+button {
+    margin: 10px auto;
+    padding: 8px 30px;
+    font-size: small;
+    font-weight: 500;
+    border-radius: 10px;
+    background: rgb(0, 40, 158);
+    text-transform: uppercase;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    color: rgb(212, 211, 211);
+    border: none;
+    transition: 0.24s ease-in-out;
+}
+.cancel {
+    background: none;
+    border: 1px solid rgb(0, 40, 158);
+}
+button:hover {
+    background-color: blue;
+    padding: 8px 38px;
+}
+.cancel:hover {
+    padding: 8px 25px;
+    background: rgb(35, 70, 173);
+    border: 1px solid rgba(106, 112, 112, 0.226);
+}
+.shape {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    height: 100px;
+    width: 100px;
+    border-radius: 5px;
+    animation: animate 40s infinite;
+}
 
 </style>
+<script>
+  function mover(e,p,c,n){
+    var lengths=document.getElementById(c).value.length;
+    var maxlength=document.getElementById(c).getAttribute("maxlength")
+    if (lengths==maxlength){
+      if (n!=""){
+        document.getElementById(n).focus()
 
-<div class="container-fluid">
-	<div class="row justify-content-center">
-		<div class="card card-signin">
-		  <div class="card-body">
-		    <form class="form-signin" method="post">{% csrf_token %}
-          {{email}}
-                <label for="otp">OTP</label>
-                <input type="text" id="lname" name="otp"><br><br>
-				<input type="submit" value="Submit">
-			</form>
-		  </div>
-		</div>
-		
-	</div>
-</div>
+      }
+    }
+    if(e.key == "Backspace"){
+      if(p!=""){
+        document.getElementById(p).focus();
 
+      }
+      
+    }
+    console.log(maxlength)
+  }
 
-
-
-
+</script>
 
 {% endblock content %}
