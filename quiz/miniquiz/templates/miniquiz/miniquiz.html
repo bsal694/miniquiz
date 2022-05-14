@@ -8,8 +8,10 @@
     <title>Document</title>
     <style type="text/css">
 		body{
-		  background: rgb(54,217,182);
-		  background: linear-gradient(90deg, rgba(54,217,182,1) 0%, rgba(32,152,126,1) 43%, rgba(0,212,255,1) 100%);
+            
+		  /* background: linear-gradient(90deg, rgba(54,217,182,1) 0%, rgba(32,152,126,1) 43%, rgba(0,212,255,1) 100%); */
+          background: linear-gradient(180deg, #4D65B9 6.04%, rgba(157, 32, 201, 0.45) 100%), #0C0404;
+          
 		}
 
 
@@ -17,6 +19,8 @@
 		  font-family: 'Montserrat', sans-serif;
 
 		}
+
+        
 
 
 		#task-container{
@@ -309,46 +313,8 @@ h1 {
                 t()
 			})
 
-		}
+		}    
 
-
-
-
-        
-    // function cntDown() {
-
-    //     let sec = 20;
-    //     const timer = setInterval(() => {
-    //         finalQuizpage=`
-    //                     <div>
-    //                         <p>Congratulations You made ${right} of ${question.length} </p>
-    //                     </div>
-    //                 ` 
-
-    //         el.innerHTML = sec--;
-
-    //         if (sec < 10) el.style.color = "#ff0";
-    //         if (sec < 5)el.style.color = "#f00"; 
-    //         if (sec < 0){
-    //             console.log(i)
-    //             if(question.length>i){
-    //                     clearInterval(timer)
-    //                     box.append(div)
-    //                     setTimeout(loadquestion, 2000,i=i+1);
-    //                     if(question.length==i){
-    //                         box.innerHTML=finalQuizpage
-    //                         el.style.display="none"
-
-    //                     }
-    //             }
-                
-
-        //     } ;
-
-        // }, 1000);
-    // }
-
-    
         optionInput.forEach((input)=>{
             
             
@@ -501,9 +467,20 @@ h1 {
                         
                         if(question.length==i+1){
                             finalQuizpage=`
+                            <center>
                             <div>
-                                <p>Congratulations You made ${right} of ${question.length} </p>
-                            </div>
+
+
+
+                                <div class="final_image">
+                                    <img src="{% static '/miniquiz/img/assest/winner.png' %}" />    
+                                </div>
+                                <div class="content">
+                                    <p>Congratulations You made ${right} of ${question.length} </p>
+                                <div>
+                                
+                                </div>
+                            <center>
                         `
                             box.innerHTML=finalQuizpage
                             el.style.display="none"
