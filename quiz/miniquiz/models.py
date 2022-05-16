@@ -63,7 +63,6 @@ class follower(BaseModel):
     def __str__(self):
         return self.user
 
-
     
 
 

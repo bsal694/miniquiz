@@ -13,59 +13,83 @@ def register_view(request,*args,**kwargs):
 
 	if request.POST:
 		form =RegistrationForm(request.POST)
+		print(request.POST)
 		if form.is_valid():
 			
-			form.save()
+			
 			email=form.cleaned_data.get('email').lower()
 			username=form.cleaned_data.get('username').lower()
 			raw_password=form.cleaned_data.get('password1')
-			# user=authenticate(email=email,password=raw_password)
-			request.session['raw_password']=raw_password
 			request.session['email']=email
-			request.session['username']=username
+			# user=authenticate(email=email,password=raw_password)
+			
+			if email:
+				user = Account.objects.filter(email__iexact = email)
+				if user.exists():
+					print("1")
+					return Response({
+						'status' : False,
+						'detail' : 'Phone number already exists'
+					})
+				else:
+					old = tempProfile.objects.filter(email__iexact = email)
+					if old.exists():
+						old = old.first()
+						count = old.count
+						if count > 100:
+							print("hello")
+						old.count = count +1
+						print('Count Increase', count)
+						a=RegisterAPI(request)
+						otp=a.data['data'][0]
 
-			a=RegisterAPI(request)
-			if a.data['status']==200:
-				return redirect("otp")
+						if a.data['status']==200:
+							return redirect("otp")
+						else: 
+							print("hello world 2")
+				
+
+						
+
 		else:
 			context['registration_form']=form
-
-
-
 	return render(request,'account/register.html',context)
 
 
 
 def otpverification(request):
-	email=request.session['email']
-	emailUser=Account.objects.filter(email=email).values('email').first(),
-	Userotp=Account.objects.filter(email=email).values('otp').first(),
-	print(Userotp[0]['otp'])
-	
-	# if request.POST == Userotp:
-	# 	print("verified") 
 	if request.POST:
+		email=request.session['email']
 		req=request.POST
 		userotp=req['one']+req['two']+req['three']+req['four']
+		email=request.session['email']
+		emailUser=tempProfile.objects.filter(email=email).values('email').first()
+		Userotp=tempProfile.objects.filter(otp=userotp).values()
+		
 		print(request.POST)
 		if userotp==Userotp[0]['otp']:
-			email=request.session['email']
-			raw_password=request.session['raw_password']
-			# username=request.session['username']
-			# form =RegistrationForm(email,raw_password,username)
-			# form.save()
-			user=authenticate(email=email,password=raw_password)
-			login(request,user)
+			old = tempProfile.objects.filter(email__iexact = email)
+			new_update=Account.objects.all()
+
+			temp_data=old.first()
+			temp_data.validated=True
+			temp_data.save()
+			email=temp_data.email
+			password=temp_data.password
+			a=Account(email=email,username=temp_data.username)
+			a.set_password(password)
+			a.save()
+
+			user=authenticate(email=email,password=password)
+
 			response=redirect('/getquestion/')
 			return response
 		else:
 			print("error")
 
-	context={
-		'email':email,
-	}
+
 	# print(request.POST['otp'])
-	return render(request,'account/otpinput.html',context)
+	return render(request,'account/otpinput.html')
 
 	
 

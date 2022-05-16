@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from accounts.models import Account
+from accounts.models import tempProfile
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Account
+        model=tempProfile
         fields='__all__'

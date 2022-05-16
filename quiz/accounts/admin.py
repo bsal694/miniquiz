@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import  UserAdmin
-
+from .models import tempProfile
 from .models import Account
 # Register your models here.
 
@@ -13,3 +13,4 @@ class Accountadmin(UserAdmin):
     fieldsets=()
 
 admin.site.register(Account,Accountadmin)
+admin.site.register(tempProfile)
