@@ -18,6 +18,9 @@
 			<br>
 		{% endfor%}
 	</div>
+
+
+	<button ><a href=""></a></button>
 	<br>
 
 
@@ -28,6 +31,7 @@
 		<form action = "" method = "POST">
 			{% csrf_token %}
 			{{form}}
+			<button type="submit" name="btnform2">Save Changes</button>
 		</form>
 	</div>
 	{% else %}
@@ -46,6 +50,8 @@
 			<br>
 		{% endfor%}
 	</div>
+
+
 	
 </body>
 </html>

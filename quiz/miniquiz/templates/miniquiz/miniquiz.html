@@ -282,6 +282,8 @@ h1 {
         const el = document.getElementById("clock");
         var div=document.createElement("div");
         div.classList.add("icons");
+  
+      
 
 
         
@@ -293,8 +295,7 @@ h1 {
             if(!(i == 0)){
                 console.log("hi")
                 myStopFunction()
-                // right_icon[0].remove()
-
+             
 
             }
             
@@ -387,9 +388,20 @@ h1 {
         function onfinish(){
             
             finalQuizpage=`
+                            <center>
                             <div>
-                                <p>Congratulations You made ${right} of ${question.length} </p>
-                            </div>
+
+
+
+                                <div class="final_image">
+                                    <img src="{% static '/miniquiz/img/assest/winner.png' %}" />    
+                                </div>
+                                <div class="content">
+                                    <p>Congratulations You made ${right} of ${question.length} </p>
+                                <div>
+                                
+                                </div>
+                            <center>
                         `
             box.innerHTML=finalQuizpage
             el.style.display="none"
@@ -450,15 +462,13 @@ h1 {
                 initial = window.setTimeout(decremenT, 50);
                 if (seconds < 10) {
                 circle.classList.add("danger");
+
                
                 
                 }
             } else {
                 mins = 0;
                 seconds = 0;
-                console.log()
-                console.log(i,question.length)
-
                 // setTimeout(loadquestion, 2000,i=i+1)
                 let btn = localStorage.getItem("btn");
 
@@ -466,25 +476,7 @@ h1 {
                     if(question.length>i){
                         
                         if(question.length==i+1){
-                            finalQuizpage=`
-                            <center>
-                            <div>
-
-
-
-                                <div class="final_image">
-                                    <img src="{% static '/miniquiz/img/assest/winner.png' %}" />    
-                                </div>
-                                <div class="content">
-                                    <p>Congratulations You made ${right} of ${question.length} </p>
-                                <div>
-                                
-                                </div>
-                            <center>
-                        `
-                            box.innerHTML=finalQuizpage
-                            el.style.display="none"
-                        }
+                            onfinish()                        }
                         else{
                             setTimeout(loadquestion, 1000,i=i+1);
                         }

@@ -11,6 +11,21 @@ def home(request):
     form=ImageForm()
     if request.user.is_authenticated:
         user=request.user
+        if request.method=='POST':
+            print(request.POST)
+            print(Category.objects.all().values())
+            categoryImage="categoryImage/"+request.POST['categoryImage']
+            categoryName=request.POST['categoryName']
+            categoryDescription=request.POST['description']
+            categoryAuthor=request.POST['authors']
+            new_category=Category(categoryImage=categoryImage,categoryName=categoryName,description=categoryDescription,authors_id=categoryAuthor)
+            new_category.save()
+
+    
+
+            # form.save()
+        else:
+            print("hello")
     context={
         'n':Category.objects.count(),
         'categories':Category.objects.filter(authors=user),
@@ -19,6 +34,7 @@ def home(request):
         'quizCategory':Category.objects.exclude(authors=user),
         
         }
+
     
 
     return render(request,'miniquiz/home.html',context)
@@ -135,6 +151,7 @@ def detail(request):
     if request.user.is_authenticated:
         currentuser=request.user.username 
         uuid_check=request.GET.get('quizid')
+        uid_check_url="/getquestion/get?quizid="+uuid_check
         username=str(request.user).upper()
         
         authorid=Category.objects.filter(uid=uuid_check).values('authors').first()
@@ -198,6 +215,7 @@ def detail(request):
         'follower':user_followers,
         'following':user_following,
         'follow_button_value':follow_button_value,
+        'next_btn':uid_check_url,
         
         
         

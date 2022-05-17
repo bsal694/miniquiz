@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import login,authenticate,logout
 from .models import *
-from accounts.forms import RegistrationForm
+from accounts.forms import RegistrationForm,Accountauthentication
 from api.views import *
 
 
@@ -26,11 +26,7 @@ def register_view(request,*args,**kwargs):
 			if email:
 				user = Account.objects.filter(email__iexact = email)
 				if user.exists():
-					print("1")
-					return Response({
-						'status' : False,
-						'detail' : 'Phone number already exists'
-					})
+					print("User Exist")
 				else:
 					old = tempProfile.objects.filter(email__iexact = email)
 					if old.exists():
@@ -47,6 +43,22 @@ def register_view(request,*args,**kwargs):
 							return redirect("otp")
 						else: 
 							print("hello world 2")
+					else:
+						a=tempProfile(email=email,username=username,password=raw_password)
+						a.save()
+						new = tempProfile.objects.filter(email__iexact = email)
+						# if counts > 100:
+						# 	print("hello")
+						# new.count = counts +1
+						# print('Count Increase', counts)
+						a=RegisterAPI(request)
+						otp=a.data['data'][0]
+
+						if a.data['status']==200:
+							return redirect("otp")
+						else: 
+							print("hello world 2")
+
 				
 
 						
@@ -81,7 +93,7 @@ def otpverification(request):
 			a.save()
 
 			user=authenticate(email=email,password=password)
-
+			login(request,user)
 			response=redirect('/getquestion/')
 			return response
 		else:
@@ -106,20 +118,25 @@ def logout_view(request):
 	logout(request)
 	return redirect("home")
 
-# def login(request):
-# 	context={}
-# 	if user.is_authenticated:
-# 		return redirect("home")
-# 	destination=get_redirect_if_exists(request)
-# 	if request.POST:
-# 		form=Accountauthentication(request.POST)
-# 		if form.is_valid:
-# 			email=request.POST['email']
-# 			password=request.POST['email']
-# 			user=authenticate(email=email,password=password)
+def logins(request):
+	# context={}
+	# if request.user.is_authenticated:
+	# 	return redirect("home")
+	# else:
+	# 	destination=get_redirect_if_exists(request)
+	print(request.POST)
+	if request.POST:
+		form=Accountauthentication(request.POST)
+		if form.is_valid:
+			email=request.POST['email']
+			password=request.POST['email']
+			user=authenticate(email=email,password=password)
+			login(request,user)
+			response=redirect('/getquestion/')
+			return response
 
 
-	# return render(request,'account/login.html')
+	return render(request,'account/login.html')
 
 
 

@@ -156,7 +156,7 @@
 							<div class="username">{{name}}</div>
 							<div class="btn">
 						
-								<form action="" method="POST">
+								<form action="" method="post">
 									{% csrf_token %}
 									<input type="hidden" name="user" value="{{name}}" readonly>
 									<input type="hidden" name="follower" value="{{user.username}}" readonly>
@@ -208,7 +208,7 @@
 						
 					</div>
 					<div class="button">
-						<button>Start Quiz</button>
+						<button onclick="window.location.href='{{next_btn}}'">Start</button>
 					</div>
 					<div class="updated_date">
 						2022-20-10
