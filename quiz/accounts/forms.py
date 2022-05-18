@@ -31,4 +31,4 @@ class Accountauthentication(forms.ModelForm):
 
     class Meta:
         model=Account
-        fields=['email','password']
+        fields='__all__'

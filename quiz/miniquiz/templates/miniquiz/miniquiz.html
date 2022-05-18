@@ -459,7 +459,7 @@ h1 {
                 perc = Math.ceil(((totalsecs - seconds) / totalsecs) * 100);
                 setProgress(perc);
                 seconds--;
-                initial = window.setTimeout(decremenT, 50);
+                initial = window.setTimeout(decremenT, 500);
                 if (seconds < 10) {
                 circle.classList.add("danger");
 

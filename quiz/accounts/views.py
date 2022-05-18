@@ -30,6 +30,11 @@ def register_view(request,*args,**kwargs):
 				else:
 					old = tempProfile.objects.filter(email__iexact = email)
 					if old.exists():
+						if old.exists():
+							for i in old:
+								i.username=username
+								i.password=raw_password
+								i.save()
 						old = old.first()
 						count = old.count
 						if count > 100:
@@ -88,6 +93,7 @@ def otpverification(request):
 			temp_data.save()
 			email=temp_data.email
 			password=temp_data.password
+			print(password)
 			a=Account(email=email,username=temp_data.username)
 			a.set_password(password)
 			a.save()
@@ -119,18 +125,13 @@ def logout_view(request):
 	return redirect("home")
 
 def logins(request):
-	# context={}
-	# if request.user.is_authenticated:
-	# 	return redirect("home")
-	# else:
-	# 	destination=get_redirect_if_exists(request)
-	print(request.POST)
 	if request.POST:
 		form=Accountauthentication(request.POST)
 		if form.is_valid:
 			email=request.POST['email']
-			password=request.POST['email']
-			user=authenticate(email=email,password=password)
+			password=request.POST['password']
+			print(email,password)
+			user=authenticate(request,email=email,password=password)
 			login(request,user)
 			response=redirect('/getquestion/')
 			return response
