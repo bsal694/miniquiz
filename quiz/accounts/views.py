@@ -5,72 +5,83 @@ from .models import *
 from accounts.forms import RegistrationForm,Accountauthentication
 from api.views import *
 
+def loginSigninController(request):
+	context={}
+	if request.POST:
+		if request.POST['type'] == 'login':
+			Login_user=logins(request)
+			if Login_user is not None:
+				login(request,Login_user)
+				return redirect('/getquestion/')
+		elif request.POST['type'] == 'Signup':
+			context=register_view(request)
+			print(context)
+			# if status == 200:
+			# 	return redirect("otp")
+
+				
+
+
+
+		
+
+	return render(request,'account/login.html',context)
+
+
 
 
 def register_view(request,*args,**kwargs):
 	user=request.user
 	context={}
-
-	if request.POST:
-		form =RegistrationForm(request.POST)
-		print(request.POST)
-		if form.is_valid():
-			
-			
-			email=form.cleaned_data.get('email').lower()
-			username=form.cleaned_data.get('username').lower()
-			raw_password=form.cleaned_data.get('password1')
-			request.session['email']=email
-			# user=authenticate(email=email,password=raw_password)
-			
-			if email:
-				user = Account.objects.filter(email__iexact = email)
-				if user.exists():
-					print("User Exist")
-				else:
-					old = tempProfile.objects.filter(email__iexact = email)
+	form =RegistrationForm(request.POST)
+	print(request.POST)
+	if form.is_valid():
+		email=form.cleaned_data.get('email').lower()
+		username=form.cleaned_data.get('username').lower()
+		raw_password=form.cleaned_data.get('password1')
+		request.session['email']=email
+		# user=authenticate(email=email,password=raw_password)
+		
+		if email:
+			user = Account.objects.filter(email__iexact = email)
+			if user.exists():
+				print("User Exist")
+			else:
+				old = tempProfile.objects.filter(email__iexact = email)
+				if old.exists():
 					if old.exists():
-						if old.exists():
-							for i in old:
-								i.username=username
-								i.password=raw_password
-								i.save()
-						old = old.first()
-						count = old.count
-						if count > 100:
-							print("hello")
-						old.count = count +1
-						print('Count Increase', count)
-						a=RegisterAPI(request)
-						otp=a.data['data'][0]
+						for i in old:
+							i.username=username
+							i.password=raw_password
+							i.save()
+					old = old.first()
+					count = old.count
+					if count > 100:
+						print("hello")
+					old.count = count +1
+					print('Count Increase', count)
+					a=RegisterAPI(request)
+					otp=a.data['data'][0]
+					return a.data['status']
 
-						if a.data['status']==200:
-							return redirect("otp")
-						else: 
-							print("hello world 2")
-					else:
-						a=tempProfile(email=email,username=username,password=raw_password)
-						a.save()
-						new = tempProfile.objects.filter(email__iexact = email)
-						# if counts > 100:
-						# 	print("hello")
-						# new.count = counts +1
-						# print('Count Increase', counts)
-						a=RegisterAPI(request)
-						otp=a.data['data'][0]
+				else:
+					a=tempProfile(email=email,username=username,password=raw_password)
+					a.save()
+					new = tempProfile.objects.filter(email__iexact = email)
+					# if counts > 100:
+					# 	print("hello")
+					# new.count = counts +1
+					# print('Count Increase', counts)
+					a=RegisterAPI(request)
+					otp=a.data['data'][0]
+					return a.data['status']
+					# if a.data['status']==200:
+					# 	return redirect("otp")
+					# else: 
+					# 	print("hello world 2")
+	else:
+		context['registration_form']=form
 
-						if a.data['status']==200:
-							return redirect("otp")
-						else: 
-							print("hello world 2")
-
-				
-
-						
-
-		else:
-			context['registration_form']=form
-	return render(request,'account/register.html',context)
 
 
 
@@ -132,9 +143,10 @@ def logins(request):
 			password=request.POST['password']
 			print(email,password)
 			user=authenticate(request,email=email,password=password)
-			login(request,user)
-			response=redirect('/getquestion/')
-			return response
+			
+			return user
+		# else:
+		# 	return False
 
 
 	return render(request,'account/login.html')

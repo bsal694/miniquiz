@@ -7,8 +7,8 @@ from accounts.views import(
     home,
 )
 urlpatterns = [
-    path('register/',register_view),
-    path('login/',views.logins),
+    path('register/',views.register_view),
+    path('login/',views.loginSigninController),
     path('otpverification/',views.otpverification,name="otp"),
     # url(r'^otpverification/', views.otpverification, name = 'otp')
 

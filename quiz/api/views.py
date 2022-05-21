@@ -17,13 +17,14 @@ def RegisterAPI(request):
         try:
             serializer=UserSerializer(data=request.data)
             if serializer.is_valid:
-                print("a")
                 a=send_otp_via_mail(request.data['email'])
+                print("2")
                 return Response({
                     'status':200,
                     'message':"Registration successfull",
                     'data':a
                 })
+            print("3")
             return Response({
                 'status':500,
                 'message':'something went wrong',

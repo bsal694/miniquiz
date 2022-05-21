@@ -20,15 +20,18 @@ def home(request):
             categoryAuthor=request.POST['authors']
             new_category=Category(categoryImage=categoryImage,categoryName=categoryName,description=categoryDescription,authors_id=categoryAuthor)
             new_category.save()
+            print("hi")
+
 
     
 
             # form.save()
         else:
             print("hello")
+            print(Category.objects.all().values())
     context={
         'n':Category.objects.count(),
-        'categories':Category.objects.filter(authors=user),
+        'categories':Category.objects.filter(authors=user).order_by('update_at')[0:4],
         'categoryImage':Category.objects.all(),
         'form':form,
         'quizCategory':Category.objects.exclude(authors=user),
