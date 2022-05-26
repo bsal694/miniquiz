@@ -1,31 +1,156 @@
+{% extends './base.html' %} 
 {% block context %}
-{% load static %}
-<link rel="stylesheet" href="{% static '/miniquiz/css/home.css' %}">
-<link rel="stylesheet" >
-<div class="playQuiz">
-  <div class="container ">
-    {% for category in categories %}
-        <div class="card" onclick="document.location='quiz/{{category.uid}}'">
-        <div class="card-header">
-          <img src="http://127.0.0.1:8000/media/{{category.categoryImage}}" alt="rover" />
-        </div>
-        <div class="card-body">
-          <span class="tag tag-teal">{{category}}</span>
-          <h4>
-            {{category.description}}
-          </h4>
+{% load static  %}
+
+
+<section class="categories" id="categories">
+
+    <h1 class="heading"> My <span>Quiz</span> </h1>
+
     
-          <div class="user">
-          <img src="https://yt3.ggpht.com/a/AGF-l7-0J1G0Ue0mcZMw-99kMeVuBmRxiPjyvIYONg=s900-c-k-c0xffffffff-no-rj-mo" alt="user" />
-          <div class="user-info">
-            <h5>Alexa</h5>
-            <small>2022-01-22</small>
-          </div>
+    <div class="box-container" style="display:flex;align-items: center;justify-content: center;flex-wrap: wrap;">
+
+               
+        <div class="box bar bars" >
+            <img src="{% static '/miniquiz/img/plus.png' %}" alt="" style="width:100px;height:auto;">
         </div>
-      </div>
+         
+        {% for myquiz in categories%}
+         
+        <div class="box bar">
+            
+            <img src="/media/{{myquiz.categoryImage}}" alt="" >
+            <p>{{myquiz}}</p>
+            <div class="cardfoot">
+                <a href="#" class="h_btn">Edit</a>
+                <a href="#"><i class="fa fa-trash crossbar" aria-hidden="true" style="color:red;font-size: medium;"></i></a>
+            </div> 
+        </div>
+        {% endfor %}
+
+                
+
+        
+
+
+
     </div>
-  {% endfor %}
-  </div>
+    
+    <h1 style="text-align:right;padding:10px;color:blue;"><a href="#">More</a></h1>
+
+</section>
+
+
+<section class="blogs" id="blogs">
+
+    <h1 class="heading"> Popular <span>Choice</span> </h1>
+
+    <div class="box-container">
+
+      
+        {% for playQuiz in quizCategory%}
+
+            <div class="box">
+                <img src="/media/{{playQuiz.categoryImage}}" alt="">
+                <div class="content">
+                    <div class="icons">
+                        <a href="#"> <i class="fas fa-user"></i>{{playQuiz}}</a>
+                        <a href="#"> <i class="fas fa-calendar"></i> {{playQuiz.update_at}} </a>
+                    </div>
+                    <h3>{{playQuiz}}</h3>
+                    <p>{{playQuiz.description}}</p>
+                    <a href="#" class="btn">Play</a>
+                </div>
+            </div>
+        {% endfor %}
+       
 </div>
+        
+    </div>
+        <h1 style="text-align:right;padding:10px;color:blue;"><a href="#">More</a></h1>
+
+</section>
+
+
+<!-- categories section ends -->
+
+<!-- review section starts  -->
+
+<section class="review" id="review">
+
+    <h1 class="heading"> customer's <span>review</span> </h1>
+
+    <div class="swiper review-slider">
+
+        <div class="swiper-wrapper">
+
+            <div class="swiper-slide box">
+                <img src="image/pic-1.png" alt="">
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde sunt fugiat dolore ipsum id est maxime ad tempore quasi tenetur.</p>
+                <h3>john deo</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <img src="image/pic-2.png" alt="">
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde sunt fugiat dolore ipsum id est maxime ad tempore quasi tenetur.</p>
+                <h3>john deo</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <img src="image/pic-3.png" alt="">
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde sunt fugiat dolore ipsum id est maxime ad tempore quasi tenetur.</p>
+                <h3>john deo</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+
+            <div class="swiper-slide box">
+                <img src="{% static '/miniquiz/img/image/pic-4.png' %}" alt="">
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde sunt fugiat dolore ipsum id est maxime ad tempore quasi tenetur.</p>
+                <h3>john deo</h3>
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- review section ends -->
+
+<!-- blogs section starts  -->
+
+
+<!-- blogs section ends -->
+
+<!-- footer section starts  -->
+
+
 
 {% endblock context %}

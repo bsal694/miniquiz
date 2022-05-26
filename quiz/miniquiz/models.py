@@ -23,6 +23,7 @@ class Category(BaseModel):
     categoryName=models.CharField(max_length=100)
     description = models.TextField()
     authors = models.ForeignKey(username,on_delete=models.CASCADE)
+    report=models.IntegerField(default=0)
 
     def __str__(self):
         return self.categoryName

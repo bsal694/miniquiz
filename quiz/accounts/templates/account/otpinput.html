@@ -8,7 +8,7 @@
           {% csrf_token %}
           <h1>two step verification</h1>
           <img src="https://images.unsplash.com/photo-1548021029-d6cf339a5ce4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="">
-          <p>4 digit OTP is send to mobile number +91********94</p>
+          <p>4 digit OTP is send to email {{email}}</p>
           <div class="code">
               <input type = "number" maxlength = "1" name="one" id="otp1" onkeyup="mover(event,'','otp1','otp2')">
               <input type = "number" maxlength = "1" name="two" id="otp2"  name="one"onkeyup="mover(event,'otp1','otp2','otp3')">

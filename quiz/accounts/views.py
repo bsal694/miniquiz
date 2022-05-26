@@ -12,12 +12,17 @@ def loginSigninController(request):
 			Login_user=logins(request)
 			if Login_user is not None:
 				login(request,Login_user)
-				return redirect('/getquestion/')
+				checkif_admin=Account.objects.filter(username=Login_user).values('is_admin').first()
+				print(checkif_admin["is_admin"])
+				if checkif_admin["is_admin"] ==False:
+					return redirect('/getquestion/')
+				else:
+					return redirect('/getquestion/admin')
 		elif request.POST['type'] == 'Signup':
-			context=register_view(request)
-			print(context)
-			# if status == 200:
-			# 	return redirect("otp")
+			conform=register_view(request)
+			if conform == 200:
+				return redirect("otp")
+
 
 				
 
@@ -55,11 +60,6 @@ def register_view(request,*args,**kwargs):
 							i.password=raw_password
 							i.save()
 					old = old.first()
-					count = old.count
-					if count > 100:
-						print("hello")
-					old.count = count +1
-					print('Count Increase', count)
 					a=RegisterAPI(request)
 					otp=a.data['data'][0]
 					return a.data['status']
@@ -86,8 +86,10 @@ def register_view(request,*args,**kwargs):
 
 
 def otpverification(request):
+	email=request.session['email']
+	context={'email':email}
 	if request.POST:
-		email=request.session['email']
+		
 		req=request.POST
 		userotp=req['one']+req['two']+req['three']+req['four']
 		email=request.session['email']
@@ -118,7 +120,7 @@ def otpverification(request):
 
 
 	# print(request.POST['otp'])
-	return render(request,'account/otpinput.html')
+	return render(request,'account/otpinput.html',context)
 
 	
 

@@ -15,6 +15,8 @@ urlpatterns = [
     path('<uuid:uuid_check>/<int:questionsid>/update',views.update,name="context"),
     path('play',views.detail,name="context"),
     path('get',views.miniquiz,name="context"),
+    path('admin',views.admin,name="context"),
+    path('categories',views.categorylist,name="context")
 
 
 

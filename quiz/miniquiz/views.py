@@ -7,6 +7,7 @@ from .form import ImageForm
 import json
 
 
+
 def home(request):
     form=ImageForm()
     if request.user.is_authenticated:
@@ -28,15 +29,19 @@ def home(request):
             # form.save()
         else:
             print("hello")
-            print(Category.objects.all().values())
+
+    form=ImageForm()
     context={
         'n':Category.objects.count(),
-        'categories':Category.objects.filter(authors=user).order_by('update_at')[0:4],
+        'categories':Category.objects.filter(authors=user).order_by('update_at')[0:5],
         'categoryImage':Category.objects.all(),
         'form':form,
-        'quizCategory':Category.objects.exclude(authors=user),
+        'quizCategory':Category.objects.exclude(authors=user)[0:4],
+        'CategoryOwner':Account.objects.get(username=user),
+        'form':form
         
         }
+    print(Category.objects.exclude(authors=user).values())
 
     
 
@@ -238,4 +243,19 @@ def miniquiz(request):
     return render(request,'miniquiz/miniquiz.html',context)
 
 
-    
+def admin(request):
+    context={
+        'UserCount':Account.objects.all().count(),
+        'CategoryList':Account.objects.all(),
+        'CategoryCount':Category.objects.all().count(),
+        'ReportCount':Category.objects.filter(report__gte=20).count(),      
+        'QuestionCount':Questions.objects.all().count(),   
+    }
+    print(Account.objects.all().values())
+  
+    return render(request,'miniquiz/admin.html',context)
+
+def categorylist(request):
+    user=request.user
+    context={'categories':Category.objects.filter(authors=user).order_by('update_at')}
+    return render(request,'miniquiz/categoryDetail.html',context)
