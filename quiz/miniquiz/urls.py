@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.urls import path,include,re_path
 from . import views
 
+
 urlpatterns = [
 
 
@@ -10,13 +11,23 @@ urlpatterns = [
     path('', views.home,name="context"),
     path('quiz/<uuid:uuid_check>', views.quiz,name="context"),
     path('<uuid:uuid_check>/delete/<int:hi>', views.home_view,name="context"),
-    # path('quiz/<uuid:uuid_check>/add',views.add,name="context")
+
     path('<uuid:uuid_check>/add',views.add,name="context"),
     path('<uuid:uuid_check>/<int:questionsid>/update',views.update,name="context"),
     path('play',views.detail,name="context"),
     path('get',views.miniquiz,name="context"),
-    path('admin',views.admin,name="context"),
-    path('categories',views.categorylist,name="context")
+
+    path('categorydelete',views.categorydelete),
+    path('categories',views.categories,name="context"),
+    path('leaderboard',views.leaderboard,name="context"),
+
+    
+
+
+
+
+
+
 
 
 

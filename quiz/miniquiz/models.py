@@ -64,6 +64,12 @@ class follower(BaseModel):
     def __str__(self):
         return self.user
 
+class scoreboard(BaseModel):
+    uid=models.UUIDField(primary_key=True, default=uuid.uuid4,editable=False)
+    authors = models.ForeignKey(username,on_delete=models.CASCADE)
+    score =models.IntegerField(default=0)
+
+
     
 
 

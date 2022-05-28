@@ -1,6 +1,9 @@
 
-
+if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
 let loginForm = document.querySelector('.login-form');
+
 
 document.querySelector('#login-btn').onclick = () =>{
     loginForm.classList.toggle('active');
@@ -63,3 +66,36 @@ var swiper = new Swiper(".review-slider", {
       },
     },
 });
+
+
+
+function deleteFunction(a){
+  uid_toggle=document.getElementById(a);
+  $.ajax(
+    {
+        type:"GET",
+        url: "/getquestion/categorydelete",
+        data:{
+                 uid: a
+        },
+        success: function( data ) 
+        {
+          uid_toggle.outerHTML=""
+        }
+     })
+
+}
+
+
+function openForm() {
+  document.getElementById("myForm").style.display="flex";
+  console.log("hhhhhhhhhhhhhhhhhhhh")
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+function reset(){
+  document.getElementById("myForms").reset();
+
+}

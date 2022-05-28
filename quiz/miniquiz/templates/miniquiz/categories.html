@@ -1,0 +1,51 @@
+{% extends './base.html' %} 
+{% block context %}
+{% load static  %}
+
+
+
+
+<section class="blogs" id="blogs">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="box-container">
+
+      
+        {% for playQuiz in categories%}
+
+            <div class="box">
+                <img src="/media/{{playQuiz.categoryImage}}" alt="">
+                <div class="content">
+                    <div class="icons">
+                        <a href="#"> <i class="fas fa-user"></i>{{playQuiz}}</a>
+                        <a href="#"> <i class="fas fa-calendar"></i> {{playQuiz.update_at}} </a>
+                    </div>
+                    <h3>{{playQuiz}}</h3>
+                    <p>{{playQuiz.description}}</p>
+                    
+                    {% if user.is_authenticated %}
+                    <a href="#"  class="btn" onclick="document.location='play?quizid={{playQuiz.uid}}'" >Play</a>
+                    {% else %}
+                    <a href="/account/login"  class="btn" >Play</a>
+                    {% endif %}
+                    
+                </div>
+            </div>
+        {% endfor %}
+       
+</div>
+        
+    </div>
+        <h1 style="text-align:right;padding:10px;color:blue;"><a href="#">More</a></h1>
+
+</section>
+
+
+
+
+
+{% endblock context %}

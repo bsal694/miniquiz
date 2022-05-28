@@ -135,7 +135,7 @@ def home(request):
 		return redirect("register")
 def logout_view(request):
 	logout(request)
-	return redirect("home")
+	return redirect("/getquestion")
 
 def logins(request):
 	if request.POST:

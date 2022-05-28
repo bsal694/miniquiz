@@ -2,28 +2,64 @@
 {% block context %}
 {% load static  %}
 
+<section class="home" id="home" >
+
+    <div class="content">
+        <h3>Create your own <span>Quiz</span></h3>
+        
+        <p>Lets make other think for a while.</p>
+        {% if user.is_authenticated %}
+            <a  class="h_btn" onclick="openForm()">Create Quiz</a>
+        {% else %}
+        <a  href='/account/login' class="h_btn">Login/Register</a>
+        {% endif%}
+
+    </div>
+
+</section>
+{% if user.is_authenticated %}
+<div class="bg_modal" id="myForm">
+    
+    <div class="modal_container">
+        <i class="cross fa fa-times" onclick="closeForm()" aria-hidden="true" style="color:red;font-size: 20px;"></i>
+        <form action="" method="POST" id="myForms">
+            {% csrf_token %}
+            
+            <h1>Create Categories</h1>
+            <hr>
+            {{form.categoryName}}
+            {{form.description}}
+            {{form.categoryImage}}
+
+            <div class="btn-block">
+              <button type="submit">Create</button>
+            </div>
+          </form>
+    </div>
+  
+    
+</div>
+{% endif%}
+
+
+{% if user.is_authenticated %}
 
 <section class="categories" id="categories">
-
     <h1 class="heading"> My <span>Quiz</span> </h1>
-
-    
-    <div class="box-container" style="display:flex;align-items: center;justify-content: center;flex-wrap: wrap;">
-
-               
-        <div class="box bar bars" >
+    <div class="box-container" style="display:flex;align-items: center;justify-content: center;flex-wrap: wrap;">           
+        <div class="box bar bars" onclick="openForm()">
             <img src="{% static '/miniquiz/img/plus.png' %}" alt="" style="width:100px;height:auto;">
         </div>
          
         {% for myquiz in categories%}
          
-        <div class="box bar">
+        <div class="box bar" id="{{myquiz.uid}}">
             
             <img src="/media/{{myquiz.categoryImage}}" alt="" >
             <p>{{myquiz}}</p>
             <div class="cardfoot">
-                <a href="#" class="h_btn">Edit</a>
-                <a href="#"><i class="fa fa-trash crossbar" aria-hidden="true" style="color:red;font-size: medium;"></i></a>
+                <a href="#" class="h_btn" onclick="document.location='quiz/{{myquiz.uid}}'">Edit</a>
+                <a href="#" onclick="deleteFunction('{{myquiz.uid}}')"><i class="fa fa-trash crossbar" aria-hidden="true" style="color:red;font-size: medium;"></i></a>
             </div> 
         </div>
         {% endfor %}
@@ -39,6 +75,7 @@
     <h1 style="text-align:right;padding:10px;color:blue;"><a href="#">More</a></h1>
 
 </section>
+{% endif %}
 
 
 <section class="blogs" id="blogs">
@@ -59,7 +96,12 @@
                     </div>
                     <h3>{{playQuiz}}</h3>
                     <p>{{playQuiz.description}}</p>
-                    <a href="#" class="btn">Play</a>
+
+                    {% if user.is_authenticated %}
+                    <a href="#"  class="btn" onclick="document.location='play?quizid={{playQuiz.uid}}'" >Play</a>
+                    {% else %}
+                    <a href="/account/login"  class="btn" >Play</a>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
@@ -142,14 +184,7 @@
 
 </section>
 
-<!-- review section ends -->
 
-<!-- blogs section starts  -->
-
-
-<!-- blogs section ends -->
-
-<!-- footer section starts  -->
 
 
 

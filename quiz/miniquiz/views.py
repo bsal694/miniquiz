@@ -13,35 +13,37 @@ def home(request):
     if request.user.is_authenticated:
         user=request.user
         if request.method=='POST':
+            form = ImageForm(request.POST)
             print(request.POST)
-            print(Category.objects.all().values())
-            categoryImage="categoryImage/"+request.POST['categoryImage']
-            categoryName=request.POST['categoryName']
-            categoryDescription=request.POST['description']
-            categoryAuthor=request.POST['authors']
-            new_category=Category(categoryImage=categoryImage,categoryName=categoryName,description=categoryDescription,authors_id=categoryAuthor)
-            new_category.save()
-            print("hi")
-
-
-    
-
-            # form.save()
-        else:
-            print("hello")
-
-    form=ImageForm()
-    context={
+            author_id=Account.objects.filter(username=user).values('id')
+            categoryImage="/categoryImage/"+request.POST['categoryImage']
+            print(categoryImage)
+            print(author_id)
+            if form.is_valid():
+                dweet = form.save(commit=False)
+                dweet.authors_id = author_id
+                dweet.categoryImage=categoryImage
+                dweet.save()
+                redirect("/getquestion")
+        
+        context={
         'n':Category.objects.count(),
         'categories':Category.objects.filter(authors=user).order_by('update_at')[0:5],
         'categoryImage':Category.objects.all(),
+        
         'form':form,
         'quizCategory':Category.objects.exclude(authors=user)[0:4],
         'CategoryOwner':Account.objects.get(username=user),
         'form':form
         
         }
-    print(Category.objects.exclude(authors=user).values())
+    else:
+        print("hello")
+        context={
+            'quizCategory':Category.objects.all()[0:4],
+        }
+    
+
 
     
 
@@ -54,7 +56,7 @@ def quiz(request,uuid_check):
     'category':Questions.objects.filter(category_id=uuid_check),
     'id':uuid_check,
     'categoryImage':categoryUrl,
-    'categoryName':Category.objects.get(uid=uuid_check)
+    'categoryName':Category.objects.filter(uid=uuid_check).values('authors_id')
     }
     return render(request,'miniquiz/test.html',context)
 
@@ -243,19 +245,37 @@ def miniquiz(request):
     return render(request,'miniquiz/miniquiz.html',context)
 
 
-def admin(request):
-    context={
-        'UserCount':Account.objects.all().count(),
-        'CategoryList':Account.objects.all(),
-        'CategoryCount':Category.objects.all().count(),
-        'ReportCount':Category.objects.filter(report__gte=20).count(),      
-        'QuestionCount':Questions.objects.all().count(),   
-    }
-    print(Account.objects.all().values())
-  
-    return render(request,'miniquiz/admin.html',context)
 
-def categorylist(request):
-    user=request.user
-    context={'categories':Category.objects.filter(authors=user).order_by('update_at')}
-    return render(request,'miniquiz/categoryDetail.html',context)
+
+
+def categorydelete(request):
+    context={}
+    try:
+        if request.method == 'GET':
+            user_id=request.GET.get('uid')
+            print(user_id)
+            deletecategory=Category.objects.filter(uid=user_id)
+            deletecategory.delete()
+    except:
+        print("error")
+    return render(request,'miniquiz/home.html',context)
+
+def categories(request):
+    context={
+        'categories':Category.objects.order_by('update_at'),
+    }
+    return render(request,'miniquiz/categories.html',context)
+
+
+
+def leaderboard(request):
+    context={
+        'categories':Category.objects.order_by('update_at'),
+    }
+    return render(request,'miniquiz/leaderboard.html',context)
+
+    
+
+
+
+
