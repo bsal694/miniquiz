@@ -16,8 +16,7 @@
     <link rel="stylesheet" href="{% static  '/miniquiz/css/home.css' %}">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-
+ 
 </head>
 <body>
     
@@ -52,8 +51,7 @@
         <div class="profile">
             <img src="{% static '/miniquiz/img/user.png' %}" alt="" style="width:80px;height:auto;border-radius: 50%;">
         </div>
-        <p>Bishal</p>
-        <p>bishalchhetri554@gmail.com</p>
+        <p>{{user}}</p>
         <a href="/account/logout" class="h_btn">Log out</a>
 
         

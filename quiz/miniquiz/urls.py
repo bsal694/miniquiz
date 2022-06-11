@@ -18,8 +18,13 @@ urlpatterns = [
     path('get',views.miniquiz,name="context"),
 
     path('categorydelete',views.categorydelete),
+    path('categoryadd',views.categoryadd,name="context"),
+
     path('categories',views.categories,name="context"),
     path('leaderboard',views.leaderboard,name="context"),
+
+
+
 
     
 

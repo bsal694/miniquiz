@@ -22,8 +22,9 @@ class Category(BaseModel):
     categoryImage=models.ImageField(null=True,blank=True,upload_to="categoryImage/")
     categoryName=models.CharField(max_length=100)
     description = models.TextField()
-    authors = models.ForeignKey(username,on_delete=models.CASCADE)
+    authors = models.ForeignKey(username,on_delete=models.CASCADE,related_name="author")
     report=models.IntegerField(default=0)
+    is_verified	= models.BooleanField(default=False)
 
     def __str__(self):
         return self.categoryName
@@ -64,10 +65,24 @@ class follower(BaseModel):
     def __str__(self):
         return self.user
 
-class scoreboard(BaseModel):
-    uid=models.UUIDField(primary_key=True, default=uuid.uuid4,editable=False)
-    authors = models.ForeignKey(username,on_delete=models.CASCADE)
-    score =models.IntegerField(default=0)
+
+    
+class leaderboards(BaseModel):
+    score=models.IntegerField(default=0)
+    categoryIdentity=models.ForeignKey(Category,related_name="category_id",on_delete=models.DO_NOTHING)
+    authorsID = models.ForeignKey(username,on_delete=models.CASCADE,related_name="authorIdentity")
+
+
+    def __str__(self):
+        return self.authorsID.username
+
+    
+
+
+
+
+
+
 
 
     

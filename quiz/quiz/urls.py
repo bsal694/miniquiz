@@ -20,7 +20,11 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     path('api/', include('api.urls')),
+    path('admins/', include('admins.urls')),
+
+
     path('account/', include('accounts.urls')),
     path('getquestion/', include('miniquiz.urls')),
 

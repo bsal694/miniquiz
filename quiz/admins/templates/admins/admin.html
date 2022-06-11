@@ -1,0 +1,268 @@
+{% extends './base.html' %}
+{% load static %} 
+{% block adminbase %}
+<main>
+    <div class="head-title">
+        <div class="left">
+            <h1>Dashboard</h1>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">Dashboard</a>
+                </li>
+                <li><i class='bx bx-chevron-right' ></i></li>
+                <li>
+                    <a class="active" href="#">Home</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <ul class="box-info">
+        <li>
+            <i class='bx bxs-user' ></i>
+            <span class="text">
+                <h3>{{totalAccount}}</h3>
+                <p>Users</p>
+            </span>
+        </li>
+        <li>
+            <i class='bx bxs-group' ></i>
+            <span class="text">
+                <h3>{{totalCategory}}</h3>
+                <p>Categories</p>
+            </span>
+        </li>
+        <li>
+
+            <i class="bx bxs-exclamation"></i>
+            
+            <span class="text">
+                <h3>{{totalReport}}</h3>
+                <p>Report</p>
+            </span>
+        </li>
+    </ul>
+
+
+    <div class="table-data">
+        <div class="order">
+            <div class="head">
+                <h3>Recent Users</h3>
+                <i class='bx bx-search' ></i>
+                <i class='bx bx-filter' ></i>
+            </div>
+            <table>
+                <thead>
+
+                    <tr>
+                        <th>User</th>
+                        <th>Email Address</th>
+                        <th>is Admin</th>
+                        <th>Last Login</th>
+                        <th>Registration date</th>
+                        <th>Otp</th>
+                    </tr>
+    
+                
+                </thead>
+                <tbody>
+                    {% for i in Account %}
+                    <tr>
+                        <td>
+                            <img src="/media/{{i.profile_image}}">
+                            <p>{{i.username}}</p>
+                        </td>
+                        <td>{{i.email}}</td>
+                        <td>{{i.is_admin}}</td>
+                        <td>{{i.last_login}}</td>
+                        <td>{{i.date_joined}}</td>
+                        <td>{{i.otp}}</td>    
+                    </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+    </div>
+</div>
+
+
+    
+            
+    
+<div class="table-data">
+    <div class="todo">
+        <div class="head">
+            <h3>Report</h3>
+        </div>
+        <ul class="todo-list">
+            {% for i in reportedCategory %}
+            <li class="myBtn" onclick="validate('{{i.uid}}')">
+                <img class="avatar" src="/media/{{i.categoryImage}}">
+                <p>{{i.categoryName}}</p>
+            </li>
+            {% endfor %}
+
+            
+        </ul>
+    </div>
+
+
+    <div class="todo">
+        <div class="head">
+            <h3>Validation</h3>
+        </div>
+        <ul class="todo-list" >
+            {% for i in checkbox %}
+            <li class="myBtn" onclick="validate('{{i.uid}}')">
+                <img class="avatar" src="/media/{{i.categoryImage}}">
+                <p>{{i.categoryName}}</p>
+
+             
+
+                
+            </li>
+            {% endfor %}
+    
+            
+        </ul>
+    </div>
+</div>
+
+</main>
+<!-- MAIN -->
+
+
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">SN</th>
+
+            <th scope="col">Question</th>
+            <th scope="col bx">Options 1</th>
+            <th scope="col">Option 2</th>
+            <th scope="col">Options 3</th>
+            <th scope="col">Options 4</th>
+
+          </tr>
+        </thead>
+        <tbody id="wrapper">
+            
+        </tbody>
+      </table>
+
+
+      <div id="decisionbtn">
+
+      </div>
+  
+  </div>
+  
+  <script>
+  // Get the modal
+  var modal = document.getElementById("myModal");
+  
+  // Get the button that opens the modal
+  var btn = document.querySelectorAll(".myBtn");
+  
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+  
+  // When the user clicks the button, open the modal 
+
+  function validate(i){
+    _this=this
+    var wrapper=document.getElementById('wrapper')
+    var decisions=document.getElementById('decisionbtn')
+    decisions.innerHTML=''
+    wrapper.innerHTML=''
+    modal.style.display = "block";
+    fetch(`http://127.0.0.1:8000/getquestion/${i}`)
+	.then((response) => response.json())
+	.then((result)=>{
+		_this.question=result.data
+        var list=this.question
+
+
+        for(var i in list){
+            var title=`<span class="title">${_this.question[i].question}</span>`
+            var item=`
+            <tr>
+                <th scope="row">${Number(i)+1}</th>
+                <td>${_this.question[i].question}</td>
+                <td>${_this.question[i].answer[0].answer}</td>
+                <td>${_this.question[i].answer[1].answer}</td>
+                <td>${_this.question[i].answer[2].answer}</td>
+                <td>${_this.question[i].answer[3].answer}</td>
+
+            </tr>`
+
+            wrapper.innerHTML += item
+
+
+
+
+
+            if(_this.question[i].answer[0].is_correct == true ){
+                console.log(_this.question[i].answer[0].is_correct)
+            }
+
+            
+                                
+        }
+        var choice=`
+            <button class="btn btn-danger" onclick="deleteFunction('${_this.question[0].uid}')" >Delete</button>
+            <button class="btn btn-success" onclick="addFunction('${_this.question[0].uid}')" >Confirm</button>
+
+        `
+        decisions.innerHTML = choice
+
+
+
+        
+		
+    })
+
+  }
+ 
+ 
+  
+  
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+  
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+
+
+  
+
+
+
+  
+
+  </script>
+</section>
+<!-- CONTENT -->
+
+
+<script src="{% static  '/admins/js/script.js' %}"></script>
+
+
+
+</body>
+</html>
+
+{% endblock adminbase %}

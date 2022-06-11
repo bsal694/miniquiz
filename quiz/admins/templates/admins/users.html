@@ -1,0 +1,66 @@
+{% extends './base.html' %}
+{% load static %} 
+{% block adminbase %}
+
+<main>
+    <div class="head-title">
+        <div class="left">
+            <h1>Dashboard</h1>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">Dashboard</a>
+                </li>
+                <li><i class='bx bx-chevron-right' ></i></li>
+                <li>
+                    <a class="active" href="#">Users</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    
+    <div class="table-data">
+        <div class="order">
+            <div class="head">
+                <h3>All Users</h3>
+                <i class='bx bx-search' ></i>
+                <i class='bx bx-filter' ></i>
+            </div>
+            <table>
+                <thead>
+
+                    <tr>
+                        <th>User</th>
+                        <th>Email Address</th>
+                        <th>is Admin</th>
+                        <th>Last Login</th>
+                        <th>Registration date</th>
+                        <th>Otp</th>
+                    </tr>
+    
+                
+                </thead>
+                <tbody>
+                    {% for i in Account %}
+                    <tr>
+                        <td>
+                            <img src="/media/{{i.profile_image}}">
+                            <p>{{i.username}}</p>
+                        </td>
+                        <td>{{i.email}}</td>
+                        <td>{{i.is_admin}}</td>
+                        <td>{{i.last_login}}</td>
+                        <td>{{i.date_joined}}</td>
+                        <td>{{i.otp}}</td>    
+                    </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+    </div>
+</div>
+
+</main>
+
+{% endblock adminbase %}

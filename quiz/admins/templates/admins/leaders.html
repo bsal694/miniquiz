@@ -1,0 +1,70 @@
+{% extends './base.html' %}
+{% load static %} 
+{% block adminbase %}
+
+<main>
+    <div class="head-title">
+        <div class="left">
+            <h1>Dashboard</h1>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="#">Dashboard</a>
+                </li>
+                <li><i class='bx bx-chevron-right' ></i></li>
+                <li>
+                    <a class="active" href="#">leaders</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+
+
+
+    <div class="table-data">
+        <div class="order">
+            <div class="head">
+                <h3>Recent Users</h3>
+                <i class='bx bx-search' ></i>
+                <i class='bx bx-filter' ></i>
+            </div>
+            <table class="css-serial">
+                <thead>
+
+                    <tr>
+                        <th>Position</th>
+                        <th>User</th>
+                        <th>Scores</th>
+                    </tr>
+    
+                
+                </thead>
+                <tbody>
+                    {% for i in userlist %}
+                    <tr>
+                        <td></td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="/media/{{i.authorsID__profile_image}}" class="circle-img circle-img--small mr-2" alt="User Img">
+                                <div class="user-info__basic">
+                                    <h5 class="mb-0">{{i.authorsID__username}}</h5>
+                                    <p class="text-muted mb-0">{{i.authorsID__email}}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-baseline">
+                                <h4 class="mr-1">{{i.score__sum}}</h4>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    
+                </tbody>
+            </table>
+    </div>
+</div>
+</main>
+
+{% endblock adminbase %}

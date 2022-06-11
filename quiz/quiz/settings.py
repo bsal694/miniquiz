@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'accounts',
     'miniquiz',
     'api',
+    'admins',
 
     #Rest Api
     'rest_framework',
@@ -104,7 +105,7 @@ WSGI_APPLICATION = 'quiz.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'django',
+        'NAME': 'test',
         'USER': 'root',
         'PASSWORD': 'Vish@l694',
         'HOST': 'localhost',

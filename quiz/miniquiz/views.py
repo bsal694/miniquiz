@@ -5,7 +5,7 @@ from accounts.views import *
 from django.contrib.auth.models import User
 from .form import ImageForm
 import json
-
+from django.db.models import Sum
 
 
 def home(request):
@@ -63,17 +63,23 @@ def quiz(request,uuid_check):
 
 def getquiz(request,uuid_check):
     try:
-        question_obj=Questions.objects.filter(category_id=uuid_check)        
+        question_obj=Questions.objects.filter(category_id=uuid_check)     
+        print(question_obj)
         data=[]
         for question_objs in question_obj:
             categories=str(question_objs.category.categoryName)
+            uid=str(question_objs.category.uid)
+
             data.append({
                 "question":question_objs.question,
                 "answer":question_objs.get_answer(),
                 'questionid':question_objs.questionid,
+                "uid":uid
             })
-            payload={'status':True,'category':categories,'data':data,}
-        return JsonResponse(payload)   
+            payload={'status':True,'category':categories,'data':data,'categoryid':uid}
+        print(uid) 
+        return JsonResponse(payload)
+          
     except Exception as e:
         print(e)
         return HttpResponse("something went wrong")
@@ -237,7 +243,6 @@ def detail(request):
 def miniquiz(request):
     uuid_check=request.GET.get('quizid')
     a=Category.objects.all().values()
-    print(a)
     context={
         'id': uuid_check,
     }
@@ -260,19 +265,39 @@ def categorydelete(request):
         print("error")
     return render(request,'miniquiz/home.html',context)
 
-def categories(request):
-    context={
-        'categories':Category.objects.order_by('update_at'),
-    }
+
+def categoryadd(request):
+    context={}
+    try:
+        if request.method == 'GET':
+            user_id=request.GET.get('uid')
+            print(user_id)
+            deletecategory=Category.objects.filter(uid=user_id).update(is_verified=True)
+
+            
+    except:
+        print("error")
     return render(request,'miniquiz/categories.html',context)
 
 
 
 def leaderboard(request):
+    dashboard=leaderboards.objects.select_related('authorsID').values('authorsID__username','authorsID__email','authorsID__profile_image','score').annotate(total_price=Sum('score'))[0:3]
+    userlist=leaderboards.objects.select_related('authorsID').values('authorsID__username','authorsID__email','authorsID__profile_image','score').annotate(total_price=Sum('score'))[0:10]
+
+  
+    context={
+        'leaderboard':dashboard,
+        'userlist':userlist,
+    }
+    print(context)
+    return render(request,'miniquiz/leaderboard.html',context)
+
+def categories(request):
     context={
         'categories':Category.objects.order_by('update_at'),
     }
-    return render(request,'miniquiz/leaderboard.html',context)
+    return render(request,'miniquiz/categories.html',context)
 
     
 
